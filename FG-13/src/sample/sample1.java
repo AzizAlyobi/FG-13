@@ -5,6 +5,12 @@
  */
 package sample;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Shiro
@@ -14,6 +20,8 @@ public class sample1 extends javax.swing.JFrame {
     /**
      * Creates new form sample1
      */
+    Connection con;
+
     public sample1() {
         initComponents();
     }
@@ -36,7 +44,11 @@ public class sample1 extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPasswordField1.setText("jPasswordField1");
+        jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jPasswordField1ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("UserID");
 
@@ -101,12 +113,40 @@ public class sample1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+        String id = jTextField1.getText();
+        String pass = jPasswordField1.toString();
+        con = DB.getConnection();
+        System.out.println("con is done");
+        ResultSet results;
+        PreparedStatement pst;
+        try {
+
+            String command = "select pass from login where user like ? ";
+
+            pst = con.prepareStatement(command);
+            pst.setString(1, id);
+            //pst.setString(2, pass);
+
+            results = pst.executeQuery();
+            System.out.println("send");
+            boolean loginSuccess = false;
+            if (results.next()) {
+               // loginSuccess = results.getBoolean("match_found");
+                System.out.println("i found it");
+               new afterPressInput().setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(null, "The user not found");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+    }
+    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPasswordField1ActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
