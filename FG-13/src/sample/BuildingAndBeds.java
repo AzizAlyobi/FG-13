@@ -5,12 +5,17 @@
  */
 package sample;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Shiro
  */
 public class BuildingAndBeds extends javax.swing.JFrame {
-
+    Connection con;
     /**
      * Creates new form BuildingAndBeds
      */
@@ -43,9 +48,32 @@ public class BuildingAndBeds extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField3ActionPerformed(evt);
+            }
+        });
+
         jButton2.setBackground(new java.awt.Color(0, 0, 0));
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Add");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
+        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setBackground(new java.awt.Color(153, 255, 153));
         jButton5.setText("Back to Menu");
@@ -156,6 +184,48 @@ public class BuildingAndBeds extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        String nameofbuilding = jTextField1.getText();
+        int numberofbeds = Integer.parseInt(jTextField2.getText());
+        int id = Integer.parseInt(jTextField4.getText());
+        int numberoficu = Integer.parseInt(jTextField3.getText());
+        
+        
+        con = DB.getConnection();
+        System.out.println("con is done");
+        ResultSet results;
+        PreparedStatement pst;
+        
+        try {
+            String command = "insert into building values (?,?,?,?)";
+            pst = con.prepareStatement(command);
+            pst.setInt(1, id);
+            pst.setString(2, nameofbuilding);
+            pst.setInt(3, numberofbeds);
+            pst.setInt(4, numberoficu);
+            
+            results = pst.executeQuery();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);            
+        }
+        JOptionPane.showMessageDialog(null, " the building has added");
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField4ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField3ActionPerformed
 
     /**
      * @param args the command line arguments

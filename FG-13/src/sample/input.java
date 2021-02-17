@@ -5,12 +5,17 @@
  */
 package sample;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Shiro
  */
 public class input extends javax.swing.JFrame {
-
+    Connection con;
     /**
      * Creates new form input
      */
@@ -51,10 +56,25 @@ public class input extends javax.swing.JFrame {
         jButton1.setText("Select File");
 
         jTextField1.setText("Name");
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         jTextField2.setText("Age");
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
 
         jTextField3.setText("Gender");
+        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField3ActionPerformed(evt);
+            }
+        });
 
         jTextField4.setText("Generated ID ");
         jTextField4.addActionListener(new java.awt.event.ActionListener() {
@@ -64,12 +84,27 @@ public class input extends javax.swing.JFrame {
         });
 
         jTextField5.setText("ICU");
+        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField5ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(0, 0, 0));
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Submit");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jTextField6.setText("Doctor ID");
+        jTextField6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField6ActionPerformed(evt);
+            }
+        });
 
         jButton5.setBackground(new java.awt.Color(153, 255, 153));
         jButton5.setText("Back to Menu");
@@ -181,6 +216,58 @@ public class input extends javax.swing.JFrame {
     private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+ 
+        
+        String name = jTextField1.getText();
+        int id = Integer.parseInt(jTextField4.getText());
+        int age = Integer.parseInt(jTextField2.getText());
+        String gender = jTextField3.getText();
+        String icu = jTextField5.getText();
+        int DoctorId = Integer.parseInt(jTextField6.getText());
+        
+                con = DB.getConnection();
+                System.out.println("con is done");
+                ResultSet results;
+                PreparedStatement pst;
+        
+        try {
+            String command = "insert into patient values (?,?,?,?,?)";
+            pst = con.prepareStatement(command);
+            pst.setInt(1, id);
+            pst.setString(2, name);
+            pst.setInt(3, age);
+            pst.setString(4, gender);
+            pst.setString(5, icu);
+            
+            results = pst.executeQuery();
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);            
+        }
+        JOptionPane.showMessageDialog(null, " the patient has added");
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField5ActionPerformed
+
+    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField3ActionPerformed
+
+    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField6ActionPerformed
 
     /**
      * @param args the command line arguments
