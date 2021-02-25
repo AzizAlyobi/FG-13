@@ -14,12 +14,14 @@ import javax.swing.JOptionPane;
  *
  * @author Shiro
  */
-public class input extends javax.swing.JFrame {
+public class Patient_input extends javax.swing.JFrame {
+
     Connection con;
+
     /**
      * Creates new form input
      */
-    public input() {
+    public Patient_input() {
         initComponents();
     }
 
@@ -218,20 +220,19 @@ public class input extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
- 
-        
+
         String name = jTextField1.getText();
         int id = Integer.parseInt(jTextField4.getText());
         int age = Integer.parseInt(jTextField2.getText());
         String gender = jTextField3.getText();
         String icu = jTextField5.getText();
         int DoctorId = Integer.parseInt(jTextField6.getText());
-        
-                con = DB.getConnection();
-                System.out.println("con is done");
-                ResultSet results;
-                PreparedStatement pst;
-        
+
+        con = DB.getConnection();
+        System.out.println("con is done");
+
+        PreparedStatement pst;
+
         try {
             String command = "insert into patient values (?,?,?,?,?)";
             pst = con.prepareStatement(command);
@@ -240,11 +241,11 @@ public class input extends javax.swing.JFrame {
             pst.setInt(3, age);
             pst.setString(4, gender);
             pst.setString(5, icu);
-            
-            results = pst.executeQuery();
-            
+
+            pst.executeUpdate();
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);            
+            JOptionPane.showMessageDialog(null, e);
         }
         JOptionPane.showMessageDialog(null, " the patient has added");
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -286,20 +287,21 @@ public class input extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(input.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Patient_input.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(input.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Patient_input.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(input.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Patient_input.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(input.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Patient_input.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new input().setVisible(true);
+                new Patient_input().setVisible(true);
             }
         });
     }

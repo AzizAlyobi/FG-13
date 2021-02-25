@@ -14,13 +14,14 @@ import javax.swing.JOptionPane;
  *
  * @author Shiro
  */
-public class DoctorsAndNurse extends javax.swing.JFrame {
+public class DNinput extends javax.swing.JFrame {
 
-    Connection con;
+    Connection con = DB.getConnection();
+
     /**
      * Creates new form DoctorsAndNurse
      */
-    public DoctorsAndNurse() {
+    public DNinput() {
         initComponents();
     }
 
@@ -238,19 +239,19 @@ public class DoctorsAndNurse extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        
+
         String selectjob = String.valueOf(jComboBox1.getSelectedItem());
         String name = jTextField1.getText();
         int age = Integer.parseInt(jTextField2.getText());
         String gender = jTextField3.getText();
         int id = Integer.parseInt(jTextField4.getText());
-        String department = jTextField5.getText() + ""+ jTextField6.getText();
-        
+        String department = jTextField5.getText() + "" + jTextField6.getText();
+
         con = DB.getConnection();
         System.out.println("con is done");
-        ResultSet results;
+
         PreparedStatement pst;
-        
+
         try {
             String command = "insert into employee values (?,?,?,?,?,?)";
             pst = con.prepareStatement(command);
@@ -260,16 +261,14 @@ public class DoctorsAndNurse extends javax.swing.JFrame {
             pst.setString(4, gender);
             pst.setString(5, selectjob);
             pst.setString(6, department);
-            results = pst.executeQuery();
-            
+            pst.executeUpdate();
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);            
+            JOptionPane.showMessageDialog(null, e);
         }
         JOptionPane.showMessageDialog(null, " the employee has added");
-        
-        
-        
-        
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -313,20 +312,21 @@ public class DoctorsAndNurse extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DoctorsAndNurse.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DNinput.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DoctorsAndNurse.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DNinput.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DoctorsAndNurse.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DNinput.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DoctorsAndNurse.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DNinput.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DoctorsAndNurse().setVisible(true);
+                new DNinput().setVisible(true);
             }
         });
     }
