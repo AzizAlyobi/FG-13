@@ -20,7 +20,7 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form sample1
      */
-    Connection con = DB.getConnection();
+    static Connection con = DB.getConnection();
 
     public Login() {
         initComponents();
@@ -115,14 +115,14 @@ public class Login extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         String id = jTextField1.getText();
-        String pass = jPasswordField1.toString();
-        con = DB.getConnection();
+        String pass = new String(jPasswordField1.getPassword());
+        
         System.out.println("con is done");
         ResultSet results;
         PreparedStatement pst;
         try {
 
-            String command = "select pass from login where user like ? ";
+            String command = "select pass, status from login where user like ? ";
 
             pst = con.prepareStatement(command);
             pst.setString(1, id);
@@ -130,14 +130,31 @@ public class Login extends javax.swing.JFrame {
 
             results = pst.executeQuery();
             System.out.println("send");
-            boolean loginSuccess = false;
+
             if (results.next()) {
-               // loginSuccess = results.getBoolean("match_found");
+                // loginSuccess = results.getBoolean("match_found");
                 System.out.println("i found it");
-               new DMMenu().setVisible(true);
-               dispose();
-            }else{
-                JOptionPane.showMessageDialog(null, "The user not found");
+
+                if (results.getString(1).equals(pass)) {
+                    if (results.getString(2).equals("expert")) {
+                        new ExMenu().setVisible(true);
+                        dispose();
+                    }else if (results.getString(2).equals("dmaker")) {
+                        new DMMenu().setVisible(true);
+                        dispose();
+                    }else if (results.getString(2).equals("admin")) {
+                        new admin().setVisible(true);
+                        dispose();
+                    }else {
+                        JOptionPane.showMessageDialog(null, "The user dont have permission to login");
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please check your password");
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, "The user is not found");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
@@ -174,6 +191,7 @@ public class Login extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        con = DB.getConnection();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Login().setVisible(true);

@@ -5,15 +5,20 @@
  */
 package sample;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import static sample.Login.con;
+
 /**
  *
  * @author Shiro
  */
 public class admin extends javax.swing.JFrame {
+    
+    static Connection con = DB.getConnection();
 
-    /**
-     * Creates new form admin
-     */
     public admin() {
         initComponents();
     }
@@ -76,7 +81,7 @@ public class admin extends javax.swing.JFrame {
                 .addGap(64, 64, 64))
         );
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Expert", "Decision maker" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please select", "Expert", "Decision maker" }));
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
         jPanel2.setPreferredSize(new java.awt.Dimension(173, 280));
@@ -86,6 +91,11 @@ public class admin extends javax.swing.JFrame {
         jLabel3.setText("User ID");
 
         jButton2.setText("Add");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -98,9 +108,9 @@ public class admin extends javax.swing.JFrame {
                     .addComponent(jLabel4))
                 .addGap(20, 20, 20)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1)
-                    .addComponent(jTextField2))
-                .addGap(27, 27, 27))
+                    .addComponent(jTextField2)
+                    .addComponent(jTextField1))
+                .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(52, 52, 52)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -117,7 +127,7 @@ public class admin extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton2)
                 .addGap(65, 65, 65))
         );
@@ -125,6 +135,11 @@ public class admin extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(204, 204, 204));
 
         jButton1.setText("Delete");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("User ID");
 
@@ -194,9 +209,9 @@ public class admin extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE))
                 .addContainerGap(81, Short.MAX_VALUE))
         );
 
@@ -206,6 +221,79 @@ public class admin extends javax.swing.JFrame {
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        if (jComboBox1.getSelectedItem().equals("Please select")) {
+            jComboBox1.grabFocus();
+            JOptionPane.showMessageDialog(null, "Please select the premission");
+        } else {
+            String id = jTextField1.getText();
+            String pass = jTextField2.getText();
+            String st = String.valueOf(jComboBox1.getSelectedItem());
+            st.toLowerCase();
+            if (st.equalsIgnoreCase("Decision maker")) {
+                st = "dmaker";
+            }
+            System.out.println("con is done");
+
+            PreparedStatement pst;
+            try {
+                String command = "insert into login values(?,?,?)";
+
+                pst = con.prepareStatement(command);
+                pst.setString(1, id);
+                pst.setString(2, pass);
+                pst.setString(3, st);
+
+                int oi = pst.executeUpdate();
+                System.out.println("send");
+                if (oi > 0) {
+                    JOptionPane.showMessageDialog(null, "The user " + id + " was added successfully ");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        if (jComboBox1.getSelectedItem().equals("Please select")) {
+            jComboBox1.grabFocus();
+            JOptionPane.showMessageDialog(null, "Please select the premission");
+        } else {
+
+            String id = jTextField3.getText();
+            String pass = jTextField4.getText();
+            String st = String.valueOf(jComboBox1.getSelectedItem());
+            st.toLowerCase();
+            if (st.equalsIgnoreCase("Decision maker")) {
+                st = "dmaker";
+            }
+            System.out.println("con is done");
+
+            PreparedStatement pst;
+            try {
+                String command = "delete from login where user=? and pass=? and status=?";
+
+                pst = con.prepareStatement(command);
+                pst.setString(1, id);
+                pst.setString(2, pass);
+                pst.setString(3, st);
+
+                int oi = pst.executeUpdate();
+                System.out.println("send");
+                if (oi > 0) {
+                    JOptionPane.showMessageDialog(null, "The user " + id + " was deleted successfully ");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -235,6 +323,7 @@ public class admin extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        con = DB.getConnection();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new admin().setVisible(true);
