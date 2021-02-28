@@ -230,8 +230,8 @@ public class Patient_input extends javax.swing.JFrame {
         String name = jTextField1.getText();
         int id = Integer.parseInt(jTextField4.getText());
         int age = Integer.parseInt(jTextField2.getText());
-        String gender = jTextField3.getText();
-        String icu = jTextField5.getText();
+        String gender = String.valueOf(jComboBox2.getSelectedItem());
+        String icu = String.valueOf(jComboBox1.getSelectedItem());
         int DoctorId = Integer.parseInt(jTextField6.getText());
 
         con = DB.getConnection();
