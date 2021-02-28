@@ -5,17 +5,29 @@
  */
 package sample;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Shiro
  */
 public class BuildingReport extends javax.swing.JFrame {
 
+    static Connection con;
+    static int Nbuilding = 0;
+    static int beds = 0;
+    static int icu = 0;
     /**
      * Creates new form BuildingReport
      */
     public BuildingReport() {
         initComponents();
+        jTextField8.setText(String.valueOf(Nbuilding));
+        jTextField9.setText(String.valueOf(beds));
+        jTextField10.setText(String.valueOf(icu));
     }
 
     /**
@@ -42,9 +54,27 @@ public class BuildingReport extends javax.swing.JFrame {
 
         jLabel11.setText("Number of Buildings");
 
+        jTextField8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField8ActionPerformed(evt);
+            }
+        });
+
         jLabel12.setText("Beds Left");
 
+        jTextField9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField9ActionPerformed(evt);
+            }
+        });
+
         jLabel13.setText("ICU Left");
+
+        jTextField10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField10ActionPerformed(evt);
+            }
+        });
 
         jButton1.setBackground(new java.awt.Color(153, 255, 153));
         jButton1.setText("Back to Menu");
@@ -127,6 +157,23 @@ public class BuildingReport extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
+        // TODO add your handling code here:
+
+
+    }//GEN-LAST:event_jTextField8ActionPerformed
+
+    private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
+        // TODO add your handling code here:
+
+
+    }//GEN-LAST:event_jTextField9ActionPerformed
+
+    private void jTextField10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField10ActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jTextField10ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -157,9 +204,31 @@ public class BuildingReport extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                
+        con = DB.getConnection();
+        System.out.println("con is done");
+
+        PreparedStatement pst;
+
+        try {
+            String command = "select NumberOfBeds , NumberOfICU  from building";
+            pst = con.prepareStatement(command);
+
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                beds += rs.getInt(1);
+                icu += rs.getInt(2);
+                Nbuilding++;
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
                 new BuildingReport().setVisible(true);
             }
         });
+        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

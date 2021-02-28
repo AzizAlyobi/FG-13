@@ -5,12 +5,18 @@
  */
 package sample;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Shiro
  */
 public class PPEinput extends javax.swing.JFrame {
 
+    Connection con;
+    
     /**
      * Creates new form PPEinput
      */
@@ -77,6 +83,11 @@ public class PPEinput extends javax.swing.JFrame {
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Submit");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -127,6 +138,12 @@ public class PPEinput extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(153, 153, 153));
 
+        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField5ActionPerformed(evt);
+            }
+        });
+
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel6.setText("Mask Restock");
 
@@ -143,6 +160,11 @@ public class PPEinput extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Submit");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -235,6 +257,70 @@ public class PPEinput extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        int masks = Integer.parseInt(jTextField5.getText());
+        int gloves = Integer.parseInt(jTextField6.getText());
+        int faceshiled = Integer.parseInt(jTextField7.getText());
+        int gowns = Integer.parseInt(jTextField8.getText());
+        
+
+        con = DB.getConnection();
+        System.out.println("con is done");
+
+        PreparedStatement pst;
+
+        try {
+            String command = "UPDATE ppe SET masks =  ? , gloves = ? , faceshiled = ? , gowns = ? ";
+            pst = con.prepareStatement(command);
+            pst.setInt(1, +masks);
+            pst.setInt(2, +gloves);
+            pst.setInt(3, +faceshiled);
+            pst.setInt(4, +gowns);
+            
+
+            pst.executeUpdate();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        JOptionPane.showMessageDialog(null, " the PPE Restock has added");
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField5ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        int masks = Integer.parseInt(jTextField5.getText());
+        int gloves = Integer.parseInt(jTextField6.getText());
+        int faceshiled = Integer.parseInt(jTextField7.getText());
+        int gowns = Integer.parseInt(jTextField8.getText());
+        
+
+        con = DB.getConnection();
+        System.out.println("con is done");
+
+        PreparedStatement pst;
+
+        try {
+            String command = "UPDATE ppe SET masks =  ? , gloves = ? , faceshiled = ? , gowns = ? ";
+            pst = con.prepareStatement(command);
+            pst.setInt(1, +masks);
+            pst.setInt(2, +gloves);
+            pst.setInt(3, +faceshiled);
+            pst.setInt(4, +gowns);
+            
+
+            pst.executeUpdate();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        JOptionPane.showMessageDialog(null, " the PPE used has added");
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
