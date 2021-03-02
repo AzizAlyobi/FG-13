@@ -5,17 +5,31 @@
  */
 package sample;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import static sample.BuildingReport.Nbuilding;
+import static sample.BuildingReport.con;
+
 /**
  *
  * @author Shiro
  */
 public class HRReport extends javax.swing.JFrame {
 
+    static Connection con;
+    static int PerDoctor = 0;
+    static int PerNurse = 0;
+    static int NumOfPatient = 0;
     /**
      * Creates new form OutPut
      */
     public HRReport() {
         initComponents();
+        jTextField1.setText(String.valueOf(PerDoctor));
+        jTextField2.setText(String.valueOf(PerNurse));
+        jTextField3.setText(String.valueOf(NumOfPatient));
     }
 
     /**
@@ -176,6 +190,25 @@ public class HRReport extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                 con = DB.getConnection();
+        System.out.println("con is done");
+
+        PreparedStatement pst;
+
+        try {
+            String command = "select PatinetsPerDoctor , PatientsPerNurse ,NumberOfPatient from ---";
+            pst = con.prepareStatement(command);
+
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                PerDoctor += rs.getInt(1);
+                PerNurse += rs.getInt(2);
+                NumOfPatient+= rs.getInt(3);
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
                 new HRReport().setVisible(true);
             }
         });
