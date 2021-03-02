@@ -5,12 +5,18 @@
  */
 package sample;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import javax.swing.JOptionPane;
+import static sample.BuildingReport.con;
+
 /**
  *
  * @author Shiro
  */
 public class CapacityInput extends javax.swing.JFrame {
 
+    static Connection con;
     /**
      * Creates new form CapacityMenu
      */
@@ -89,6 +95,11 @@ public class CapacityInput extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Submit");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(153, 255, 153));
         jButton2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -241,7 +252,7 @@ public class CapacityInput extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
@@ -280,6 +291,55 @@ public class CapacityInput extends javax.swing.JFrame {
     private void jTextField10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField10ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField10ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+        //capacity table
+        int doctorC = Integer.parseInt(jTextField1.getText());
+        int nurseC = Integer.parseInt(jTextField2.getText());
+        int patientC= Integer.parseInt(jTextField3.getText());
+        int masksC = Integer.parseInt(jTextField5.getText());
+        int glovesC = Integer.parseInt(jTextField6.getText());
+        int faceshiledC = Integer.parseInt(jTextField7.getText());
+        int gownsC = Integer.parseInt(jTextField4.getText());
+        
+        //building table
+        String nameofbuilding = jTextField10.getText();
+        int numberofbeds = Integer.parseInt(jTextField8.getText());
+        int id = Integer.parseInt(jTextField9.getText());
+        int numberoficu = Integer.parseInt(jTextField11.getText());
+        
+        con = DB.getConnection();
+        System.out.println("con is done");
+        PreparedStatement pst;
+        
+        try {
+            // capacity table
+            String command = "insert into capacity values (?,?,?,?,?,?,?)";
+            pst = con.prepareStatement(command);
+            pst.setInt(1,doctorC );
+            pst.setInt(2,nurseC );
+            pst.setInt(3,patientC );
+            pst.setInt(4,masksC );
+            pst.setInt(5,glovesC );
+            pst.setInt(6,faceshiledC );
+            pst.setInt(7,gownsC );
+            pst.executeUpdate();
+           
+            // building table
+            command = "insert into building values (?,?,?,?)";
+            pst = con.prepareStatement(command);
+            pst.setInt(1, id);
+            pst.setString(2, nameofbuilding);
+            pst.setInt(3, numberofbeds);
+            pst.setInt(4, numberoficu);
+            pst.executeUpdate();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        JOptionPane.showMessageDialog(null, " the capacity has added");
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

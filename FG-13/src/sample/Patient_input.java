@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
+import static sample.BuildingReport.Nbuilding;
+import static sample.BuildingReport.con;
 
 /**
  *
@@ -16,13 +18,16 @@ import javax.swing.JOptionPane;
  */
 public class Patient_input extends javax.swing.JFrame {
 
-    Connection con;
+    static Connection con;
+    static int doctorID;
+    static PreparedStatement pst;
 
     /**
      * Creates new form input
      */
     public Patient_input() {
         initComponents();
+        jTextField6.setText(String.valueOf(doctorID));
     }
 
     /**
@@ -232,12 +237,10 @@ public class Patient_input extends javax.swing.JFrame {
         int age = Integer.parseInt(jTextField2.getText());
         String gender = String.valueOf(jComboBox2.getSelectedItem());
         String icu = String.valueOf(jComboBox1.getSelectedItem());
-        int DoctorId = Integer.parseInt(jTextField6.getText());
+        //  int doctorId = Integer.parseInt(jTextField6.getText());
 
         con = DB.getConnection();
         System.out.println("con is done");
-
-        PreparedStatement pst;
 
         try {
             String command = "insert into patient values (?,?,?,?,?)";
@@ -299,6 +302,21 @@ public class Patient_input extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                try {
+                    con = DB.getConnection();
+                    System.out.println("con is done");
+                    String command = "SELECT employee.ID, patient.doctorID FROM employee INNER JOIN patient ON patient.doctorID = employee.ID;";
+                    pst = con.prepareStatement(command);
+
+                    ResultSet rs = pst.executeQuery();
+                    while (rs.next()) {
+                        doctorID += rs.getInt(1);
+
+                    }
+
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e);
+                }
                 new Patient_input().setVisible(true);
             }
         });
