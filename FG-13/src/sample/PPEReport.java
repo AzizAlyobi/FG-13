@@ -5,12 +5,13 @@
  */
 package sample;
 
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import static sample.HRReport.PerDoctor;
-import static sample.HRReport.con;
 
 /**
  *
@@ -19,30 +20,89 @@ import static sample.HRReport.con;
 public class PPEReport extends javax.swing.JFrame {
 
     static Connection con;
-    static int Mask = 0;
-    static int Gloves = 0;
-    static int FaceShiled = 0;
-    static int Gown = 0;
-    static int LeftMask = 0;
-    static int LeftGloves = 0;
-    static int LeftFaceShiled = 0;
-    static int LeftGown = 0;
 
-    
+    private void initSelfListener() {
+        WindowListener taskStarterWindowListener = new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                System.out.println("Performing task..."); //Perform task here. In this case, we are simulating a startup (only once) time-consuming task that would use a worker.
+                int Mask = 0;
+                int Gloves = 0;
+                int FaceShiled = 0;
+                int Gown = 0;
+                int LeftMask = 0;
+                int LeftGloves = 0;
+                int LeftFaceShiled = 0;
+                int LeftGown = 0;
+
+                PreparedStatement pst;
+                try {
+                    String command = "select Masks , Gloves ,FaceShiled , Gowns from ppe";
+                    pst = con.prepareStatement(command);
+
+                    ResultSet rs = pst.executeQuery();
+                    while (rs.next()) {
+                        Mask += rs.getInt(1);
+                        Gloves += rs.getInt(2);
+                        FaceShiled += rs.getInt(3);
+                        Gown += rs.getInt(4);
+                    }
+
+                } catch (SQLException ee) {
+                    JOptionPane.showMessageDialog(null, ee);
+                }
+
+                jTextField1.setText(String.valueOf(Mask));
+                jTextField2.setText(String.valueOf(Gloves));
+                jTextField3.setText(String.valueOf(FaceShiled));
+                jTextField4.setText(String.valueOf(LeftMask));
+                jTextField5.setText(String.valueOf(LeftGloves));
+                jTextField6.setText(String.valueOf(LeftFaceShiled));
+                jTextField7.setText(String.valueOf(LeftGown));
+                jTextField8.setText(String.valueOf(Gown));
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                //Do nothing...Or something...You decide!
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                //Do nothing...Or drink coffee...NVM; always drink coffee!
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+                //Do nothing...Or do EVERYTHING!
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+                //Do nothing...Or break the law...
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+                //Do nothing...Procrastinate like me!
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                //Do nothing...And please don't notice I have way too much free time today...
+            }
+        };
+
+        //Here is where the magic happens! We make (a listener within) the frame start listening to the frame's own events!
+        this.addWindowListener(taskStarterWindowListener);
+    }
+
     /**
      * Creates new form PPEReport
      */
     public PPEReport() {
         initComponents();
-        jTextField1.setText(String.valueOf(Mask));
-        jTextField2.setText(String.valueOf(Gloves));
-        jTextField3.setText(String.valueOf(FaceShiled));
-        jTextField4.setText(String.valueOf(LeftMask));
-        jTextField5.setText(String.valueOf(LeftGloves));
-        jTextField6.setText(String.valueOf(LeftFaceShiled));
-        jTextField7.setText(String.valueOf(LeftGown));
-        jTextField8.setText(String.valueOf(Gown));
-       
+        initSelfListener();
     }
 
     /**
@@ -242,32 +302,14 @@ public class PPEReport extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 con = DB.getConnection();
-        System.out.println("con is done");
+                System.out.println("con is done");
 
-        PreparedStatement pst;
-         try {
-            String command = "select Mask , Gloves ,FaceShiled , Gowns from PersonalPortectiveEquipment";
-            pst = con.prepareStatement(command);
-
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                Mask += rs.getInt(1);
-                Gloves += rs.getInt(2);
-                FaceShiled+= rs.getInt(3);
-                Gown+= rs.getInt(4);
-            }
-            
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
-                new HRReport().setVisible(true);
             }
         });
 
-                new PPEReport().setVisible(true);
-            }
-       
-    
+        new PPEReport().setVisible(true);
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

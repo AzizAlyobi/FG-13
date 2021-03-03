@@ -7,6 +7,8 @@ package sample;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,7 +18,7 @@ import javax.swing.JOptionPane;
 public class PPEinput extends javax.swing.JFrame {
 
     Connection con;
-    
+
     /**
      * Creates new form PPEinput
      */
@@ -64,6 +66,11 @@ public class PPEinput extends javax.swing.JFrame {
 
         jButton5.setBackground(new java.awt.Color(102, 255, 102));
         jButton5.setText("Back to Menu");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 153));
 
@@ -260,25 +267,36 @@ public class PPEinput extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        int masks = Integer.parseInt(jTextField5.getText());
-        int gloves = Integer.parseInt(jTextField6.getText());
-        int faceshiled = Integer.parseInt(jTextField7.getText());
-        int gowns = Integer.parseInt(jTextField8.getText());
-        
+        int masks = 0;
+        int gloves = 0;
+        int faceshiled = 0;
+        int gowns = 0;
 
         con = DB.getConnection();
         System.out.println("con is done");
 
         PreparedStatement pst;
+        Statement stmt;
+        ResultSet rs;
 
         try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("select * from ppe");
+            rs.next();
+            masks = rs.getInt(1);
+            gloves = rs.getInt(2);
+            faceshiled = rs.getInt(3);
+            gowns = rs.getInt(4);
+            masks += Integer.parseInt(jTextField5.getText());
+            gloves += Integer.parseInt(jTextField6.getText());
+            faceshiled += Integer.parseInt(jTextField7.getText());
+            gowns += Integer.parseInt(jTextField8.getText());
             String command = "UPDATE ppe SET masks =  ? , gloves = ? , faceshiled = ? , gowns = ? ";
             pst = con.prepareStatement(command);
-            pst.setInt(1, +masks);
-            pst.setInt(2, +gloves);
-            pst.setInt(3, +faceshiled);
-            pst.setInt(4, +gowns);
-            
+            pst.setInt(1, masks);
+            pst.setInt(2, gloves);
+            pst.setInt(3, faceshiled);
+            pst.setInt(4, gowns);
 
             pst.executeUpdate();
 
@@ -294,25 +312,36 @@ public class PPEinput extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        int masks = Integer.parseInt(jTextField5.getText());
-        int gloves = Integer.parseInt(jTextField6.getText());
-        int faceshiled = Integer.parseInt(jTextField7.getText());
-        int gowns = Integer.parseInt(jTextField8.getText());
-        
+        int masks = 0;
+        int gloves = 0;
+        int faceshiled = 0;
+        int gowns = 0;
 
         con = DB.getConnection();
         System.out.println("con is done");
 
         PreparedStatement pst;
+        Statement stmt;
+        ResultSet rs;
 
         try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("select * from ppe");
+            rs.next();
+            masks = rs.getInt(1);
+            gloves = rs.getInt(2);
+            faceshiled = rs.getInt(3);
+            gowns = rs.getInt(4);
+            masks -= Integer.parseInt(jTextField4.getText());
+            gloves -= Integer.parseInt(jTextField1.getText());
+            faceshiled -= Integer.parseInt(jTextField2.getText());
+            gowns -= Integer.parseInt(jTextField3.getText());
             String command = "UPDATE ppe SET masks =  ? , gloves = ? , faceshiled = ? , gowns = ? ";
             pst = con.prepareStatement(command);
             pst.setInt(1, +masks);
             pst.setInt(2, +gloves);
             pst.setInt(3, +faceshiled);
             pst.setInt(4, +gowns);
-            
 
             pst.executeUpdate();
 
@@ -321,6 +350,12 @@ public class PPEinput extends javax.swing.JFrame {
         }
         JOptionPane.showMessageDialog(null, " the PPE used has added");
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        new inputMenu().setVisible(true);
+       dispose();
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments

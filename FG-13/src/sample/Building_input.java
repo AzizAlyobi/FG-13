@@ -206,7 +206,7 @@ public class Building_input extends javax.swing.JFrame {
             pst.setInt(3, numberofbeds);
             pst.setInt(4, numberoficu);
             
-            results = pst.executeQuery();
+            pst.executeUpdate();
             
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);            

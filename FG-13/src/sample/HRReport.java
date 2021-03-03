@@ -5,12 +5,16 @@
  */
 package sample;
 
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
-import static sample.BuildingReport.Nbuilding;
-import static sample.BuildingReport.con;
+
 
 /**
  *
@@ -19,17 +23,94 @@ import static sample.BuildingReport.con;
 public class HRReport extends javax.swing.JFrame {
 
     static Connection con;
-    static int PerDoctor = 0;
-    static int PerNurse = 0;
-    static int NumOfPatient = 0;
+
     /**
      * Creates new form OutPut
      */
+    private void initSelfListeners() {
+        WindowListener taskStarterWindowListener = new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                System.out.println("Performing task..."); //Perform task here. In this case, we are simulating a startup (only once) time-consuming task that would use a worker.
+                double PerDoctor = 0;
+                double PerNurse = 0;
+                int NumOfPatient = 0;
+                
+                con = DB.getConnection();
+                System.out.println("con is done");
+
+                PreparedStatement pst;
+
+                try {
+                    String command = "select * from employee";
+                    pst = con.prepareStatement(command);
+                    int PerDoctors = 0;
+                    int PerNurses = 0;
+                    ResultSet rs = pst.executeQuery();
+                    while (rs.next()) {
+                        if (rs.getString(5).equalsIgnoreCase("doctor")) {
+                            PerDoctors++;
+                        } else {
+                            PerNurses++;
+                        }
+                    }
+                    Statement stmt = con.createStatement();
+                    rs = stmt.executeQuery("select * from patient");
+                    while (rs.next()) {
+                        NumOfPatient++;
+                    }
+
+                    PerDoctor = Double.valueOf(PerDoctors) / Double.valueOf(NumOfPatient);
+                    PerNurse = Double.valueOf(PerNurses) / Double.valueOf(NumOfPatient);
+
+                } catch (SQLException ee) {
+                    JOptionPane.showMessageDialog(null, ee);
+                }
+                
+                jTextField1.setText(String.format("%.02f", PerDoctor));
+                jTextField2.setText(String.format("%.02f", PerNurse));
+                jTextField3.setText(String.valueOf(NumOfPatient));
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        };
+
+        //Here is where the magic happens! We make (a listener within) the frame start listening to the frame's own events!
+        this.addWindowListener(taskStarterWindowListener);
+    }
+
     public HRReport() {
         initComponents();
-        jTextField1.setText(String.valueOf(PerDoctor));
-        jTextField2.setText(String.valueOf(PerNurse));
-        jTextField3.setText(String.valueOf(NumOfPatient));
+        initSelfListeners();
+
     }
 
     /**
@@ -153,6 +234,8 @@ public class HRReport extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        new viewReport().setVisible(true);
+        dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
@@ -190,25 +273,7 @@ public class HRReport extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                 con = DB.getConnection();
-        System.out.println("con is done");
-
-        PreparedStatement pst;
-
-        try {
-            String command = "select PatinetsPerDoctor , PatientsPerNurse ,NumberOfPatient from ---";
-            pst = con.prepareStatement(command);
-
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                PerDoctor += rs.getInt(1);
-                PerNurse += rs.getInt(2);
-                NumOfPatient+= rs.getInt(3);
-            }
-            
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
+                
                 new HRReport().setVisible(true);
             }
         });

@@ -5,9 +5,12 @@
  */
 package sample;
 
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,17 +20,82 @@ import javax.swing.JOptionPane;
 public class BuildingReport extends javax.swing.JFrame {
 
     static Connection con;
-    static int Nbuilding = 0;
-    static int beds = 0;
-    static int icu = 0;
+
     /**
      * Creates new form BuildingReport
      */
+    private void initSelfListeners() {
+        WindowListener taskStarterWindowListener = new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                System.out.println("Performing task..."); //Perform task here. In this case, we are simulating a startup (only once) time-consuming task that would use a worker.
+                int Nbuilding = 0;
+                int beds = 0;
+                int icu = 0;
+
+                con = DB.getConnection();
+                System.out.println("con is done");
+
+                PreparedStatement pst;
+
+                try {
+                    String command = "select NumberOfBeds , NumberOfICU  from building";
+                    pst = con.prepareStatement(command);
+
+                    ResultSet rs = pst.executeQuery();
+                    while (rs.next()) {
+                        beds += rs.getInt(1);
+                        icu += rs.getInt(2);
+                        Nbuilding++;
+                    }
+
+                } catch (SQLException ee) {
+                    JOptionPane.showMessageDialog(null, ee);
+                }
+                jTextField8.setText(String.valueOf(Nbuilding));
+                jTextField9.setText(String.valueOf(beds));
+                jTextField10.setText(String.valueOf(icu));
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                //Do nothing...Or something...You decide!
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                //Do nothing...Or drink coffee...NVM; always drink coffee!
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+                //Do nothing...Or do EVERYTHING!
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+                //Do nothing...Or break the law...
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+                //Do nothing...Procrastinate like me!
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                //Do nothing...And please don't notice I have way too much free time today...
+            }
+        };
+
+        //Here is where the magic happens! We make (a listener within) the frame start listening to the frame's own events!
+        this.addWindowListener(taskStarterWindowListener);
+    }
+
     public BuildingReport() {
         initComponents();
-        jTextField8.setText(String.valueOf(Nbuilding));
-        jTextField9.setText(String.valueOf(beds));
-        jTextField10.setText(String.valueOf(icu));
+        initSelfListeners();
+
     }
 
     /**
@@ -78,6 +146,11 @@ public class BuildingReport extends javax.swing.JFrame {
 
         jButton1.setBackground(new java.awt.Color(153, 255, 153));
         jButton1.setText("Back to Menu");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -174,6 +247,12 @@ public class BuildingReport extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jTextField10ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        new viewReport().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -204,30 +283,10 @@ public class BuildingReport extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
-        con = DB.getConnection();
-        System.out.println("con is done");
 
-        PreparedStatement pst;
-
-        try {
-            String command = "select NumberOfBeds , NumberOfICU  from building";
-            pst = con.prepareStatement(command);
-
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                beds += rs.getInt(1);
-                icu += rs.getInt(2);
-                Nbuilding++;
-            }
-            
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
                 new BuildingReport().setVisible(true);
             }
         });
-        
 
     }
 

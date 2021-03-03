@@ -5,12 +5,12 @@
  */
 package sample;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
-import static sample.BuildingReport.Nbuilding;
-import static sample.BuildingReport.con;
+
 
 /**
  *
@@ -27,7 +27,7 @@ public class Patient_input extends javax.swing.JFrame {
      */
     public Patient_input() {
         initComponents();
-        jTextField6.setText(String.valueOf(doctorID));
+
     }
 
     /**
@@ -95,6 +95,11 @@ public class Patient_input extends javax.swing.JFrame {
 
         jButton5.setBackground(new java.awt.Color(153, 255, 153));
         jButton5.setText("Back to Menu");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -237,26 +242,31 @@ public class Patient_input extends javax.swing.JFrame {
         int age = Integer.parseInt(jTextField2.getText());
         String gender = String.valueOf(jComboBox2.getSelectedItem());
         String icu = String.valueOf(jComboBox1.getSelectedItem());
-        //  int doctorId = Integer.parseInt(jTextField6.getText());
+        int doctorId = Integer.parseInt(jTextField6.getText());
 
         con = DB.getConnection();
         System.out.println("con is done");
 
         try {
-            String command = "insert into patient values (?,?,?,?,?)";
+            String command = "insert into patient values (?,?,?,?,?,?)";
             pst = con.prepareStatement(command);
             pst.setInt(1, id);
             pst.setString(2, name);
             pst.setInt(3, age);
             pst.setString(4, gender);
             pst.setString(5, icu);
-
+            pst.setInt(6, doctorId);
             pst.executeUpdate();
 
+        } catch (MySQLIntegrityConstraintViolationException ex) {
+            //handle ex
+            JOptionPane.showMessageDialog(null, "You cant enter this id record please enter another id ");
         } catch (Exception e) {
+            
             JOptionPane.showMessageDialog(null, e);
+
         }
-        JOptionPane.showMessageDialog(null, " the patient has added");
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -270,6 +280,12 @@ public class Patient_input extends javax.swing.JFrame {
     private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField6ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+         new inputMenu().setVisible(true);
+       dispose();
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -302,21 +318,9 @@ public class Patient_input extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                try {
-                    con = DB.getConnection();
-                    System.out.println("con is done");
-                    String command = "SELECT employee.ID, patient.doctorID FROM employee INNER JOIN patient ON patient.doctorID = employee.ID;";
-                    pst = con.prepareStatement(command);
 
-                    ResultSet rs = pst.executeQuery();
-                    while (rs.next()) {
-                        doctorID += rs.getInt(1);
+                con = DB.getConnection();
 
-                    }
-
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, e);
-                }
                 new Patient_input().setVisible(true);
             }
         });
