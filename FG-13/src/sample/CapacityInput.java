@@ -5,6 +5,7 @@
  */
 package sample;
 
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
@@ -17,6 +18,7 @@ import static sample.BuildingReport.con;
 public class CapacityInput extends javax.swing.JFrame {
 
     static Connection con;
+
     /**
      * Creates new form CapacityMenu
      */
@@ -66,12 +68,36 @@ public class CapacityInput extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField6KeyPressed(evt);
+            }
+        });
+
         jLabel8.setText("Gowns Capacity");
+
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField2KeyPressed(evt);
+            }
+        });
+
+        jTextField7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField7KeyPressed(evt);
+            }
+        });
 
         jLabel3.setText(" Patient Capacity");
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel9.setText("Human Resources");
+
+        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField3KeyPressed(evt);
+            }
+        });
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel10.setText("Building");
@@ -81,11 +107,35 @@ public class CapacityInput extends javax.swing.JFrame {
 
         jLabel11.setText("Building ID");
 
+        jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField4KeyPressed(evt);
+            }
+        });
+
+        jTextField8.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField8KeyPressed(evt);
+            }
+        });
+
         jLabel5.setText("Masks Capacity");
 
         jLabel15.setText("Doctors Capacity");
 
         jLabel6.setText("Gloves Capacity");
+
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+        });
+
+        jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField5KeyPressed(evt);
+            }
+        });
 
         jLabel2.setText("Nurses Capacity");
 
@@ -151,14 +201,30 @@ public class CapacityInput extends javax.swing.JFrame {
                 jTextField9ActionPerformed(evt);
             }
         });
+        jTextField9.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField9KeyPressed(evt);
+            }
+        });
 
         jTextField10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField10ActionPerformed(evt);
             }
         });
+        jTextField10.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField10KeyPressed(evt);
+            }
+        });
 
         jLabel16.setText("Number of Beds");
+
+        jTextField11.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField11KeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -298,39 +364,39 @@ public class CapacityInput extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField10ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+
         //capacity table
         int doctorC = Integer.parseInt(jTextField1.getText());
         int nurseC = Integer.parseInt(jTextField2.getText());
-        int patientC= Integer.parseInt(jTextField3.getText());
+        int patientC = Integer.parseInt(jTextField3.getText());
         int masksC = Integer.parseInt(jTextField5.getText());
         int glovesC = Integer.parseInt(jTextField6.getText());
         int faceshiledC = Integer.parseInt(jTextField7.getText());
         int gownsC = Integer.parseInt(jTextField4.getText());
-        
+
         //building table
         String nameofbuilding = jTextField10.getText();
         int numberofbeds = Integer.parseInt(jTextField8.getText());
         int id = Integer.parseInt(jTextField9.getText());
         int numberoficu = Integer.parseInt(jTextField11.getText());
-        
+
         con = DB.getConnection();
         System.out.println("con is done");
         PreparedStatement pst;
-        
+
         try {
             // capacity table
             String command = "insert into capacity values (?,?,?,?,?,?,?)";
             pst = con.prepareStatement(command);
-            pst.setInt(1,doctorC );
-            pst.setInt(2,nurseC );
-            pst.setInt(3,patientC );
-            pst.setInt(4,masksC );
-            pst.setInt(5,glovesC );
-            pst.setInt(6,faceshiledC );
-            pst.setInt(7,gownsC );
+            pst.setInt(1, doctorC);
+            pst.setInt(2, nurseC);
+            pst.setInt(3, patientC);
+            pst.setInt(4, masksC);
+            pst.setInt(5, glovesC);
+            pst.setInt(6, faceshiledC);
+            pst.setInt(7, gownsC);
             pst.executeUpdate();
-           
+
             // building table
             command = "insert into building values (?,?,?,?)";
             pst = con.prepareStatement(command);
@@ -349,8 +415,129 @@ public class CapacityInput extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         new inputMenu().setVisible(true);
-       dispose();
+        dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+
+        if (Character.isDigit(c) || Character.isISOControl(c)) {
+            jTextField1.setEditable(true);
+        } else {
+            jTextField1.setEditable(false);
+        }
+    }//GEN-LAST:event_jTextField1KeyPressed
+
+    private void jTextField2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+
+        if (Character.isDigit(c) || Character.isISOControl(c)) {
+            jTextField2.setEditable(true);
+        } else {
+            jTextField2.setEditable(false);
+        }
+    }//GEN-LAST:event_jTextField2KeyPressed
+
+    private void jTextField3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+
+        if (Character.isDigit(c) || Character.isISOControl(c)) {
+            jTextField3.setEditable(true);
+        } else {
+            jTextField3.setEditable(false);
+        }
+    }//GEN-LAST:event_jTextField3KeyPressed
+
+    private void jTextField5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+
+        if (Character.isDigit(c) || Character.isISOControl(c)) {
+            jTextField5.setEditable(true);
+        } else {
+            jTextField5.setEditable(false);
+        }
+    }//GEN-LAST:event_jTextField5KeyPressed
+
+    private void jTextField6KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+
+        if (Character.isDigit(c) || Character.isISOControl(c)) {
+            jTextField6.setEditable(true);
+        } else {
+            jTextField6.setEditable(false);
+        }
+    }//GEN-LAST:event_jTextField6KeyPressed
+
+    private void jTextField7KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+
+        if (Character.isDigit(c) || Character.isISOControl(c)) {
+            jTextField7.setEditable(true);
+        } else {
+            jTextField7.setEditable(false);
+        }
+    }//GEN-LAST:event_jTextField7KeyPressed
+
+    private void jTextField4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+
+        if (Character.isDigit(c) || Character.isISOControl(c)) {
+            jTextField4.setEditable(true);
+        } else {
+            jTextField4.setEditable(false);
+        }
+    }//GEN-LAST:event_jTextField4KeyPressed
+
+    private void jTextField8KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField8KeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+
+        if (Character.isDigit(c) || Character.isISOControl(c)) {
+            jTextField8.setEditable(true);
+        } else {
+            jTextField8.setEditable(false);
+        }
+    }//GEN-LAST:event_jTextField8KeyPressed
+
+    private void jTextField10KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField10KeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+
+        if (Character.isDigit(c) || Character.isISOControl(c)) {
+            jTextField10.setEditable(true);
+        } else {
+            jTextField10.setEditable(false);
+        }
+    }//GEN-LAST:event_jTextField10KeyPressed
+
+    private void jTextField9KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField9KeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+
+        if (Character.isDigit(c) || Character.isISOControl(c)) {
+            jTextField9.setEditable(true);
+        } else {
+            jTextField9.setEditable(false);
+        }
+    }//GEN-LAST:event_jTextField9KeyPressed
+
+    private void jTextField11KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField11KeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+
+        if (Character.isDigit(c) || Character.isISOControl(c)) {
+            jTextField11.setEditable(true);
+        } else {
+            jTextField11.setEditable(false);
+        }
+    }//GEN-LAST:event_jTextField11KeyPressed
 
     /**
      * @param args the command line arguments
