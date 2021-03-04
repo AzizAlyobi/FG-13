@@ -181,6 +181,9 @@
   </Layout>
   <SubComponents>
     <Component class="javax.swing.JTextField" name="jTextField6">
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField6KeyPressed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel8">
       <Properties>
@@ -188,8 +191,14 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField2">
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField2KeyPressed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField7">
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField7KeyPressed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
@@ -205,6 +214,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField3">
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField3KeyPressed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel10">
       <Properties>
@@ -228,8 +240,14 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField4">
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField4KeyPressed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField8">
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField8KeyPressed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">
       <Properties>
@@ -247,8 +265,14 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField1">
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField1KeyPressed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField5">
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField5KeyPressed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
@@ -360,11 +384,13 @@
     <Component class="javax.swing.JTextField" name="jTextField9">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField9ActionPerformed"/>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField9KeyPressed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField10">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField10ActionPerformed"/>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField10KeyPressed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel16">
@@ -373,6 +399,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField11">
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField11KeyPressed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

@@ -5,6 +5,7 @@
  */
 package sample;
 
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -56,11 +57,16 @@ public class DNinput extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jComboBox1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Doctor", "Nurses" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please choose", "Doctor", "Nurses" }));
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
+            }
+        });
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
             }
         });
 
@@ -69,16 +75,31 @@ public class DNinput extends javax.swing.JFrame {
                 jTextField2ActionPerformed(evt);
             }
         });
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField2KeyPressed(evt);
+            }
+        });
 
         jTextField4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField4ActionPerformed(evt);
             }
         });
+        jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField4KeyPressed(evt);
+            }
+        });
 
         jTextField5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField5ActionPerformed(evt);
+            }
+        });
+        jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField5KeyPressed(evt);
             }
         });
 
@@ -96,6 +117,11 @@ public class DNinput extends javax.swing.JFrame {
         jTextField6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField6ActionPerformed(evt);
+            }
+        });
+        jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField6KeyPressed(evt);
             }
         });
 
@@ -295,8 +321,65 @@ public class DNinput extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         new inputMenu().setVisible(true);
-       dispose();
+        dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTextField2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+
+        if (Character.isDigit(c) || Character.isISOControl(c)) {
+            jTextField2.setEditable(true);
+        } else {
+            jTextField2.setEditable(false);
+        }
+    }//GEN-LAST:event_jTextField2KeyPressed
+
+    private void jTextField6KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+
+        if (Character.isDigit(c) || Character.isISOControl(c)) {
+            jTextField6.setEditable(true);
+        } else {
+            jTextField6.setEditable(false);
+        }
+    }//GEN-LAST:event_jTextField6KeyPressed
+
+    private void jTextField4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+
+        if (Character.isDigit(c) || Character.isISOControl(c)) {
+            jTextField4.setEditable(true);
+        } else {
+            jTextField4.setEditable(false);
+        }
+
+
+    }//GEN-LAST:event_jTextField4KeyPressed
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+
+        if (Character.isLetter(c) || Character.isWhitespace(c) || Character.isISOControl(c)) {
+            jTextField1.setEditable(true);
+        } else {
+            jTextField1.setEditable(false);
+        }
+    }//GEN-LAST:event_jTextField1KeyPressed
+
+    private void jTextField5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyPressed
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+
+        if (Character.isLetter(c) || Character.isWhitespace(c) || Character.isISOControl(c)) {
+            jTextField5.setEditable(true);
+        } else {
+            jTextField5.setEditable(false);
+        }
+    }//GEN-LAST:event_jTextField5KeyPressed
 
     /**
      * @param args the command line arguments
