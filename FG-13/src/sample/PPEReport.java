@@ -37,7 +37,7 @@ public class PPEReport extends javax.swing.JFrame {
 
                 PreparedStatement pst;
                 try {
-                    String command = "select Masks , Gloves ,FaceShiled , Gowns from ppe";
+                    String command = "select Masks , Gloves ,FaceShiled , Gowns ,  from ppe";
                     pst = con.prepareStatement(command);
 
                     ResultSet rs = pst.executeQuery();

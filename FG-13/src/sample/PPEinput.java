@@ -336,12 +336,12 @@ public class PPEinput extends javax.swing.JFrame {
             gloves -= Integer.parseInt(jTextField1.getText());
             faceshiled -= Integer.parseInt(jTextField2.getText());
             gowns -= Integer.parseInt(jTextField3.getText());
-            String command = "UPDATE ppe SET masks =  ? , gloves = ? , faceshiled = ? , gowns = ? ";
+            String command = "UPDATE ppe SET MasksUsed =  ? , GlovesUsed = ? , FaceShiledUsed = ? , GownsUsed = ? ";
             pst = con.prepareStatement(command);
-            pst.setInt(1, +masks);
-            pst.setInt(2, +gloves);
-            pst.setInt(3, +faceshiled);
-            pst.setInt(4, +gowns);
+            pst.setInt(1, masks);
+            pst.setInt(2, gloves);
+            pst.setInt(3, faceshiled);
+            pst.setInt(4, gowns);
 
             pst.executeUpdate();
 
