@@ -5,17 +5,158 @@
  */
 package sample;
 
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import static sample.HRReport.con;
+import static sample.PPEReport.con;
+
 /**
  *
  * @author Shiro
  */
 public class prediction extends javax.swing.JFrame {
 
+     static Connection con;
+
     /**
      * Creates new form prediction
      */
+           
+        
+  
+       private void initSelfListener() {
+        WindowListener taskStarterWindowListener = new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                int DoctorN =0; 
+        int NurseN =0;
+        int MaskN =0;
+        int GownsN=0;
+        int GlovesN=0;
+        int FaceshieldN = 0;
+        int BedN=0;
+        int ICUN=0;
+        String TempBuild="";
+        int DoctorC = 0 ;
+        int NurseC = 0;
+        int MaskC = 0;
+        int glovesC = 0;
+        int faceshieldC = 0;
+        int gownsC = 0;
+        
+        
+        con = DB.getConnection();
+        System.out.println("con is done");
+
+        PreparedStatement pst;
+        Statement stmt;
+        ResultSet rs;
+        ResultSet rs1;
+
+                try {
+                    String command = "select * from employee";
+                    pst = con.prepareStatement(command);
+                     DoctorN = 0;
+                     NurseN = 0;
+                     rs = pst.executeQuery();
+                    while (rs.next()) {
+                        if (rs.getString(5).equalsIgnoreCase("doctor")) {
+                            DoctorN++;
+                        } else {
+                            NurseN++;
+                        }
+                    }
+                    
+                    stmt = con.createStatement();
+                    rs = stmt.executeQuery("select Masks ,gloves , faceshield , gowns  from ppe");
+                    rs.next();
+                    MaskN = rs.getInt(1);
+                    GlovesN = rs.getInt(2);
+                    FaceshieldN = rs.getInt(3);
+                    GownsN = rs.getInt(4);
+                    
+                    
+                    
+                    rs = stmt.executeQuery("select DoctorC , NurseC , MaskC ,glovesC , faceshieldC , gownsC  from Capacity");
+                    rs.next();
+                    DoctorC = rs.getInt(1);
+                    NurseC = rs.getInt(2);
+                    MaskC = rs.getInt(3);
+                    glovesC = rs.getInt(4);
+                    faceshieldC = rs.getInt(5);
+                    gownsC = rs.getInt(6);
+                    
+                    DoctorN = DoctorC - DoctorN ;
+                    NurseN = NurseC - NurseN;
+                    MaskN = MaskC - MaskN;
+                    GlovesN = glovesC - GlovesN;
+                    FaceshieldN =faceshieldC - FaceshieldN;
+                    GownsN = gownsC - GownsN;
+                } catch (SQLException ee) {
+                    JOptionPane.showMessageDialog(null, ee);
+                }
+                jTextField1.setText (String.valueOf(DoctorN));
+                jTextField2.setText (String.valueOf(NurseN));
+                jTextField4.setText (String.valueOf(MaskN));
+                jTextField5.setText (String.valueOf(GlovesN));
+                jTextField6.setText (String.valueOf(FaceshieldN));
+                jTextField7.setText (String.valueOf(GownsN));
+
+                
+         }  
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                //Do nothing...Or something...You decide!
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                //Do nothing...Or drink coffee...NVM; always drink coffee!
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+                //Do nothing...Or do EVERYTHING!
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+                //Do nothing...Or break the law...
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+                //Do nothing...Procrastinate like me!
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                //Do nothing...And please don't notice I have way too much free time today...
+            }
+        };
+
+        //Here is where the magic happens! We make (a listener within) the frame start listening to the frame's own events!
+        this.addWindowListener(taskStarterWindowListener);
+    }
+
+       
+       
+       
     public prediction() {
         initComponents();
+        initSelfListener();
+        
+        
+        
+        
+        
     }
 
     /**
@@ -75,6 +216,12 @@ public class prediction extends javax.swing.JFrame {
         jLabel1.setText("Doctors Needed");
 
         jLabel6.setText("Gloves Needed");
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         jLabel13.setText("ICU Needed");
 
@@ -230,11 +377,16 @@ public class prediction extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
+
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -264,6 +416,7 @@ public class prediction extends javax.swing.JFrame {
             }
         });
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
