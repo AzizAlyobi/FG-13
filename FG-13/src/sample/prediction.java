@@ -40,8 +40,8 @@ public class prediction extends javax.swing.JFrame {
         int GownsN=0;
         int GlovesN=0;
         int FaceshieldN = 0;
-        int BedN=0;
-        int ICUN=0;
+        int BedC=0;
+        int ICUC=0;
         String TempBuild="";
         int DoctorC = 0 ;
         int NurseC = 0;
@@ -49,6 +49,8 @@ public class prediction extends javax.swing.JFrame {
         int glovesC = 0;
         int faceshieldC = 0;
         int gownsC = 0;
+        int NumOfBeds = 0;
+        int NumOfICU = 0;
         
         
         con = DB.getConnection();
@@ -74,16 +76,21 @@ public class prediction extends javax.swing.JFrame {
                     }
                     
                     stmt = con.createStatement();
-                    rs = stmt.executeQuery("select Masks ,gloves , faceshield , gowns  from ppe");
+                    rs = stmt.executeQuery("select Masks ,Gloves , FaceShiled , Gowns  from ppe");
                     rs.next();
                     MaskN = rs.getInt(1);
                     GlovesN = rs.getInt(2);
                     FaceshieldN = rs.getInt(3);
                     GownsN = rs.getInt(4);
                     
+                     stmt = con.createStatement();
+                    rs = stmt.executeQuery("select NumberOfBeds , NumberOfICU from building");
+                    rs.next();
+                    NumOfBeds = rs.getInt(1);
+                    NumOfICU = rs.getInt(2);
                     
                     
-                    rs = stmt.executeQuery("select DoctorC , NurseC , MaskC ,glovesC , faceshieldC , gownsC  from Capacity");
+                    rs = stmt.executeQuery("select DoctorC , NurseC , MaskC ,glovesC , faceshieldC , gownsC , bedsC , icuC from Capacity");
                     rs.next();
                     DoctorC = rs.getInt(1);
                     NurseC = rs.getInt(2);
@@ -91,6 +98,8 @@ public class prediction extends javax.swing.JFrame {
                     glovesC = rs.getInt(4);
                     faceshieldC = rs.getInt(5);
                     gownsC = rs.getInt(6);
+                    BedC = rs.getInt(7);
+                    ICUC = rs.getInt(8);
                     
                     DoctorN = DoctorC - DoctorN ;
                     NurseN = NurseC - NurseN;
@@ -98,6 +107,8 @@ public class prediction extends javax.swing.JFrame {
                     GlovesN = glovesC - GlovesN;
                     FaceshieldN =faceshieldC - FaceshieldN;
                     GownsN = gownsC - GownsN;
+                    NumOfBeds = BedC - NumOfBeds;
+                    NumOfICU = ICUC - NumOfICU;
                 } catch (SQLException ee) {
                     JOptionPane.showMessageDialog(null, ee);
                 }
@@ -107,7 +118,8 @@ public class prediction extends javax.swing.JFrame {
                 jTextField5.setText (String.valueOf(GlovesN));
                 jTextField6.setText (String.valueOf(FaceshieldN));
                 jTextField7.setText (String.valueOf(GownsN));
-
+                jTextField9.setText (String.valueOf(NumOfBeds));
+                jTextField10.setText (String.valueOf(NumOfICU));
                 
          }  
 
