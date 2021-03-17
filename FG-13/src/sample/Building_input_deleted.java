@@ -14,12 +14,12 @@ import javax.swing.JOptionPane;
  *
  * @author Shiro
  */
-public class Building_input extends javax.swing.JFrame {
+public class Building_input_deleted extends javax.swing.JFrame {
     Connection con;
     /**
      * Creates new form BuildingAndBeds
      */
-    public Building_input() {
+    public Building_input_deleted() {
         initComponents();
     }
 
@@ -244,21 +244,23 @@ public class Building_input extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Building_input.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Building_input_deleted.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Building_input.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Building_input_deleted.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Building_input.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Building_input_deleted.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Building_input.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Building_input_deleted.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Building_input().setVisible(true);
+                new Building_input_deleted().setVisible(true);
             }
         });
     }

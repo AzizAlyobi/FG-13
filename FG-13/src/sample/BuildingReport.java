@@ -55,6 +55,11 @@ public class BuildingReport extends javax.swing.JFrame {
                 jTextField8.setText(String.valueOf(Nbuilding));
                 jTextField9.setText(String.valueOf(beds));
                 jTextField10.setText(String.valueOf(icu));
+                //locking user input
+                
+                 jTextField9.setEditable(false);
+                 jTextField10.setEditable(false);
+                 jTextField8.setEditable(false);
             }
 
             @Override
@@ -95,7 +100,7 @@ public class BuildingReport extends javax.swing.JFrame {
     public BuildingReport() {
         initComponents();
         initSelfListeners();
-
+        setLocationRelativeTo(null);
     }
 
     /**

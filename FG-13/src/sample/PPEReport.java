@@ -37,29 +37,46 @@ public class PPEReport extends javax.swing.JFrame {
 
                 PreparedStatement pst;
                 try {
-                    String command = "select Masks , Gloves ,FaceShiled , Gowns ,  from ppe";
+                    String command = "select Masks , Gloves ,FaceShiled , Gowns, MasksUsed , GlovesUsed ,FaceShiledUsed , GownsUsed from ppe";
                     pst = con.prepareStatement(command);
 
                     ResultSet rs = pst.executeQuery();
                     while (rs.next()) {
-                        Mask += rs.getInt(1);
-                        Gloves += rs.getInt(2);
-                        FaceShiled += rs.getInt(3);
-                        Gown += rs.getInt(4);
+                        Mask = rs.getInt(1);
+                        Gloves = rs.getInt(2);
+                        FaceShiled = rs.getInt(3);
+                        Gown = rs.getInt(4);
+                        LeftMask = rs.getInt(5);
+                        LeftGloves = rs.getInt(6);
+                        LeftFaceShiled = rs.getInt(7);
+                        LeftGown = rs.getInt(8);
                     }
 
                 } catch (SQLException ee) {
                     JOptionPane.showMessageDialog(null, ee);
                 }
 
-                jTextField1.setText(String.valueOf(Mask));
-                jTextField2.setText(String.valueOf(Gloves));
-                jTextField3.setText(String.valueOf(FaceShiled));
-                jTextField4.setText(String.valueOf(LeftMask));
-                jTextField5.setText(String.valueOf(LeftGloves));
-                jTextField6.setText(String.valueOf(LeftFaceShiled));
-                jTextField7.setText(String.valueOf(LeftGown));
-                jTextField8.setText(String.valueOf(Gown));
+                jTextField4.setText(String.valueOf(Mask));
+                jTextField5.setText(String.valueOf(Gloves));
+                jTextField6.setText(String.valueOf(FaceShiled));
+                jTextField7.setText(String.valueOf(Gown));
+                // ppe used next
+                jTextField1.setText(String.valueOf(LeftMask));
+                jTextField2.setText(String.valueOf(LeftGloves));
+                jTextField3.setText(String.valueOf(LeftFaceShiled));
+                jTextField8.setText(String.valueOf(LeftGown));
+                
+                
+                //locking input from userr
+                 jTextField1.setEditable(false);
+                 jTextField2.setEditable(false);
+                 jTextField3.setEditable(false);
+                 jTextField4.setEditable(false);
+                 jTextField5.setEditable(false);
+                 jTextField6.setEditable(false);
+                 jTextField7.setEditable(false);
+                 jTextField8.setEditable(false);
+                 
             }
 
             @Override
@@ -103,6 +120,7 @@ public class PPEReport extends javax.swing.JFrame {
     public PPEReport() {
         initComponents();
         initSelfListener();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -147,6 +165,11 @@ public class PPEReport extends javax.swing.JFrame {
 
         jButton1.setBackground(new java.awt.Color(153, 255, 153));
         jButton1.setText("Back to Menu");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Mask Used");
 
@@ -255,7 +278,7 @@ public class PPEReport extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -270,6 +293,12 @@ public class PPEReport extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        new inputMenu().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

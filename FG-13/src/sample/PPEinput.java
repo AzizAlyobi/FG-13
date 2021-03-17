@@ -13,6 +13,7 @@ public class PPEinput extends javax.swing.JFrame {
 
     public PPEinput() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     @SuppressWarnings("unchecked")
@@ -298,6 +299,11 @@ public class PPEinput extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        
+         if (jTextField1.getText().isEmpty() || jTextField2.getText().isEmpty() || jTextField3.getText().isEmpty()  || jTextField4.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please Fill in The blanks for the PPE Restock");
+        }else{
+        
         int masks = 0;
         int gloves = 0;
         int faceshiled = 0;
@@ -338,6 +344,7 @@ public class PPEinput extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e);
         }
         JOptionPane.showMessageDialog(null, " The PPE Restock has added");
+         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
@@ -346,6 +353,12 @@ public class PPEinput extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        
+        if (jTextField1.getText().isEmpty() || jTextField2.getText().isEmpty() || jTextField3.getText().isEmpty()  || jTextField4.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please Fill in The blanks for the used PPE");
+        }else{
+        
+        
         int masks = 0;
         int gloves = 0;
         int faceshiled = 0;
@@ -407,6 +420,7 @@ public class PPEinput extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e);
         }
         JOptionPane.showMessageDialog(null, " The PPE used has added");
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

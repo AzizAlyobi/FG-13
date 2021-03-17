@@ -24,6 +24,7 @@ public class DNinput extends javax.swing.JFrame {
      */
     public DNinput() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -266,6 +267,14 @@ public class DNinput extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        
+        if (jTextField1.getText().isEmpty() || jTextField2.getText().isEmpty() || jTextField4.getText().isEmpty() || jTextField5.getText().isEmpty() || jTextField6.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please Fill in The blanks");
+        }else if (jComboBox1.getSelectedIndex()==0 ||jComboBox2.getSelectedIndex()==0) {
+            JOptionPane.showMessageDialog(null, "Please choose from the drop menu");
+        }else {
+
+        
 
         String selectjob = String.valueOf(jComboBox1.getSelectedItem());
         String name = jTextField1.getText();
@@ -295,7 +304,7 @@ public class DNinput extends javax.swing.JFrame {
         }
         JOptionPane.showMessageDialog(null, " the employee has added");
 
-
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed

@@ -22,51 +22,47 @@ import static sample.PPEReport.con;
  */
 public class prediction extends javax.swing.JFrame {
 
-     static Connection con;
+    static Connection con;
 
     /**
      * Creates new form prediction
      */
-           
-        
-  
-       private void initSelfListener() {
+    private void initSelfListener() {
         WindowListener taskStarterWindowListener = new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
-                int DoctorN =0; 
-        int NurseN =0;
-        int MaskN =0;
-        int GownsN=0;
-        int GlovesN=0;
-        int FaceshieldN = 0;
-        int BedC=0;
-        int ICUC=0;
-        String TempBuild="";
-        int DoctorC = 0 ;
-        int NurseC = 0;
-        int MaskC = 0;
-        int glovesC = 0;
-        int faceshieldC = 0;
-        int gownsC = 0;
-        int NumOfBeds = 0;
-        int NumOfICU = 0;
-        
-        
-        con = DB.getConnection();
-        System.out.println("con is done");
+                int DoctorN = 0;
+                int NurseN = 0;
+                int MaskN = 0;
+                int GownsN = 0;
+                int GlovesN = 0;
+                int FaceshieldN = 0;
+                int BedC = 0;
+                int ICUC = 0;
+                String TempBuild = "";
+                int DoctorC = 0;
+                int NurseC = 0;
+                int MaskC = 0;
+                int glovesC = 0;
+                int faceshieldC = 0;
+                int gownsC = 0;
+                int NumOfBeds = 0;
+                int NumOfICU = 0;
 
-        PreparedStatement pst;
-        Statement stmt;
-        ResultSet rs;
-        ResultSet rs1;
+                con = DB.getConnection();
+                System.out.println("con is done");
+
+                PreparedStatement pst;
+                Statement stmt;
+                ResultSet rs;
+                ResultSet rs1;
 
                 try {
                     String command = "select * from employee";
                     pst = con.prepareStatement(command);
-                     DoctorN = 0;
-                     NurseN = 0;
-                     rs = pst.executeQuery();
+                    DoctorN = 0;
+                    NurseN = 0;
+                    rs = pst.executeQuery();
                     while (rs.next()) {
                         if (rs.getString(5).equalsIgnoreCase("doctor")) {
                             DoctorN++;
@@ -74,7 +70,7 @@ public class prediction extends javax.swing.JFrame {
                             NurseN++;
                         }
                     }
-                    
+
                     stmt = con.createStatement();
                     rs = stmt.executeQuery("select Masks ,Gloves , FaceShiled , Gowns  from ppe");
                     rs.next();
@@ -82,14 +78,13 @@ public class prediction extends javax.swing.JFrame {
                     GlovesN = rs.getInt(2);
                     FaceshieldN = rs.getInt(3);
                     GownsN = rs.getInt(4);
-                    
-                     stmt = con.createStatement();
+
+                    stmt = con.createStatement();
                     rs = stmt.executeQuery("select NumberOfBeds , NumberOfICU from building");
                     rs.next();
                     NumOfBeds = rs.getInt(1);
                     NumOfICU = rs.getInt(2);
-                    
-                    
+
                     rs = stmt.executeQuery("select DoctorC , NurseC , MaskC ,glovesC , faceshieldC , gownsC , bedsC , icuC from Capacity");
                     rs.next();
                     DoctorC = rs.getInt(1);
@@ -100,28 +95,38 @@ public class prediction extends javax.swing.JFrame {
                     gownsC = rs.getInt(6);
                     BedC = rs.getInt(7);
                     ICUC = rs.getInt(8);
-                    
-                    DoctorN = DoctorC - DoctorN ;
+
+                    DoctorN = DoctorC - DoctorN;
                     NurseN = NurseC - NurseN;
                     MaskN = MaskC - MaskN;
                     GlovesN = glovesC - GlovesN;
-                    FaceshieldN =faceshieldC - FaceshieldN;
+                    FaceshieldN = faceshieldC - FaceshieldN;
                     GownsN = gownsC - GownsN;
                     NumOfBeds = BedC - NumOfBeds;
                     NumOfICU = ICUC - NumOfICU;
                 } catch (SQLException ee) {
                     JOptionPane.showMessageDialog(null, ee);
                 }
-                jTextField1.setText (String.valueOf(DoctorN));
-                jTextField2.setText (String.valueOf(NurseN));
-                jTextField4.setText (String.valueOf(MaskN));
-                jTextField5.setText (String.valueOf(GlovesN));
-                jTextField6.setText (String.valueOf(FaceshieldN));
-                jTextField7.setText (String.valueOf(GownsN));
-                jTextField9.setText (String.valueOf(NumOfBeds));
-                jTextField10.setText (String.valueOf(NumOfICU));
-                
-         }  
+                jTextField1.setText(String.valueOf(DoctorN));
+                jTextField2.setText(String.valueOf(NurseN));
+                jTextField4.setText(String.valueOf(MaskN));
+                jTextField5.setText(String.valueOf(GlovesN));
+                jTextField6.setText(String.valueOf(FaceshieldN));
+                jTextField7.setText(String.valueOf(GownsN));
+                jTextField9.setText(String.valueOf(NumOfBeds));
+                jTextField10.setText(String.valueOf(NumOfICU));
+                //locking user input
+                jTextField1.setEditable(false);
+                jTextField2.setEditable(false);
+                jTextField4.setEditable(false);
+                jTextField5.setEditable(false);
+                jTextField6.setEditable(false);
+                jTextField7.setEditable(false);
+                jTextField8.setEditable(false);
+                jTextField9.setEditable(false);
+                jTextField10.setEditable(false);
+
+            }
 
             @Override
             public void windowClosing(WindowEvent e) {
@@ -158,17 +163,11 @@ public class prediction extends javax.swing.JFrame {
         this.addWindowListener(taskStarterWindowListener);
     }
 
-       
-       
-       
     public prediction() {
         initComponents();
         initSelfListener();
-        
-        
-        
-        
-        
+        setLocationRelativeTo(null);
+
     }
 
     /**
@@ -244,6 +243,11 @@ public class prediction extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(153, 255, 153));
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton1.setText("Back to Menu");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -372,15 +376,15 @@ public class prediction extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(1, 1, 1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(70, 70, 70))
@@ -393,6 +397,12 @@ public class prediction extends javax.swing.JFrame {
         // TODO add your handling code here:
 
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        new viewReport().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -428,7 +438,7 @@ public class prediction extends javax.swing.JFrame {
             }
         });
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

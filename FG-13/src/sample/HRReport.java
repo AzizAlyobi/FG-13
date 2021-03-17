@@ -70,6 +70,11 @@ public class HRReport extends javax.swing.JFrame {
                 jTextField1.setText(String.format("%.02f", PerDoctor));
                 jTextField2.setText(String.format("%.02f", PerNurse));
                 jTextField3.setText(String.valueOf(NumOfPatient));
+                // locking user input
+                 jTextField1.setEditable(false);
+                 jTextField2.setEditable(false);
+                 jTextField3.setEditable(false);
+                
             }
 
             @Override
@@ -110,6 +115,7 @@ public class HRReport extends javax.swing.JFrame {
     public HRReport() {
         initComponents();
         initSelfListeners();
+        setLocationRelativeTo(null);
 
     }
 

@@ -27,6 +27,7 @@ public class Patient_input extends javax.swing.JFrame {
      */
     public Patient_input() {
         initComponents();
+        setLocationRelativeTo(null);
 
     }
 
@@ -257,6 +258,14 @@ public class Patient_input extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
+        if (jTextField1.getText().isEmpty() || jTextField2.getText().isEmpty() || jTextField4.getText().isEmpty() || jTextField6.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please Fill in The blanks");
+        }else if (jComboBox1.getSelectedIndex()==0 ||jComboBox2.getSelectedIndex()==0) {
+            JOptionPane.showMessageDialog(null, "Please choose from the drop menu");
+        }else {
+        
+        
+        
         String name = jTextField1.getText();
         int id = Integer.parseInt(jTextField4.getText());
         int age = Integer.parseInt(jTextField2.getText());
@@ -285,6 +294,7 @@ public class Patient_input extends javax.swing.JFrame {
 
             JOptionPane.showMessageDialog(null, e);
 
+        }
         }
 
     }//GEN-LAST:event_jButton2ActionPerformed
