@@ -301,6 +301,7 @@ public class DNinput extends javax.swing.JFrame {
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
+            System.out.println("Missing Input");
         }
         JOptionPane.showMessageDialog(null, " the employee has added");
 

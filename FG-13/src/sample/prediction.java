@@ -48,7 +48,7 @@ public class prediction extends javax.swing.JFrame {
                 int gownsC = 0;
                 int NumOfBeds = 0;
                 int NumOfICU = 0;
-
+                int patient =0;
                 con = DB.getConnection();
                 System.out.println("con is done");
 
@@ -104,6 +104,19 @@ public class prediction extends javax.swing.JFrame {
                     GownsN = gownsC - GownsN;
                     NumOfBeds = BedC - NumOfBeds;
                     NumOfICU = ICUC - NumOfICU;
+                    
+                    rs = stmt.executeQuery("select COUNT(*) from patient");
+                    rs.next();
+                    patient = rs.getInt(1);
+                    if (patient > BedC){
+                    String yes="Yes";
+                        
+                        jTextField8.setText(yes);
+                    }else{
+                        String no="No";
+                     
+                        jTextField8.setText(no);
+                    }
                 } catch (SQLException ee) {
                     JOptionPane.showMessageDialog(null, ee);
                 }
@@ -219,6 +232,12 @@ public class prediction extends javax.swing.JFrame {
         jLabel4.setText("PPE Resources ");
 
         jLabel11.setText("Temporary Buildings");
+
+        jTextField8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField8ActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Masks Needed");
 
@@ -403,6 +422,10 @@ public class prediction extends javax.swing.JFrame {
         new viewReport().setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField8ActionPerformed
 
     /**
      * @param args the command line arguments

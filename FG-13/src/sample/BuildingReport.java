@@ -133,7 +133,7 @@ public class BuildingReport extends javax.swing.JFrame {
             }
         });
 
-        jLabel12.setText("Beds Left");
+        jLabel12.setText("Beds available");
 
         jTextField9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -141,7 +141,7 @@ public class BuildingReport extends javax.swing.JFrame {
             }
         });
 
-        jLabel13.setText("ICU Left");
+        jLabel13.setText("ICU available");
 
         jTextField10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

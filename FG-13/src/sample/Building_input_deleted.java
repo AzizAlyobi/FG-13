@@ -209,7 +209,8 @@ public class Building_input_deleted extends javax.swing.JFrame {
             pst.executeUpdate();
             
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);            
+            JOptionPane.showMessageDialog(null, e);        
+            System.out.println("Missing Input");
         }
         JOptionPane.showMessageDialog(null, " the building has added");
         
