@@ -67,7 +67,7 @@ public class viewReport extends javax.swing.JFrame {
             }
         });
 
-        jButton9.setText("Perdiction ");
+        jButton9.setText("Decision Support Screen");
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton9ActionPerformed(evt);
