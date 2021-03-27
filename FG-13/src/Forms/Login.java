@@ -159,54 +159,56 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
         String id = jTextField1.getText();
         String pass = new String(jPasswordField1.getPassword());
-        
-        System.out.println("con is done");
-        ResultSet results;
-        PreparedStatement pst;
-        try {
+        if (jTextField1.getText().isEmpty() || pass.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please Fill in The blanks");
+        } else {
 
-            String command = "select pass, status from login where user like ? ";
+            System.out.println("con is done");
+            ResultSet results;
+            PreparedStatement pst;
+            try {
 
-            pst = con.prepareStatement(command);
-            pst.setString(1, id);
-            //pst.setString(2, pass);
+                String command = "select pass, status from login where user like ? ";
 
-            results = pst.executeQuery();
-            System.out.println("send");
+                pst = con.prepareStatement(command);
+                pst.setString(1, id);
+                //pst.setString(2, pass);
 
-            if (results.next()) {
-                // loginSuccess = results.getBoolean("match_found");
-                System.out.println("i found it");
+                results = pst.executeQuery();
+                System.out.println("send");
 
-                if (results.getString(1).equals(pass)) {
-                    if (results.getString(2).equals("expert")) {
-                        new ExMenu().setVisible(true);
-                        dispose();
-                    }else if (results.getString(2).equals("dmaker")) {
-                        new DMMenu().setVisible(true);
-                        dispose();
-                    }else if (results.getString(2).equals("admin")) {
-                        new admin().setVisible(true);
-                        dispose();
-                    }else {
-                        JOptionPane.showMessageDialog(null, "The user dont have permission to login");
+                if (results.next()) {
+                    // loginSuccess = results.getBoolean("match_found");
+                    System.out.println("i found it");
+
+                    if (results.getString(1).equals(pass)) {
+                        if (results.getString(2).equals("expert")) {
+                            new ExMenu().setVisible(true);
+                            dispose();
+                        } else if (results.getString(2).equals("dmaker")) {
+                            new DMMenu().setVisible(true);
+                            dispose();
+                        } else if (results.getString(2).equals("admin")) {
+                            new admin().setVisible(true);
+                            dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "The user dont have permission to login");
+                        }
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Please check your password");
                     }
 
                 } else {
-                    JOptionPane.showMessageDialog(null, "Please check your password");
+                    JOptionPane.showMessageDialog(null, "The user is not found");
                 }
-
-            } else {
-                JOptionPane.showMessageDialog(null, "The user is not found");
+            } catch (CommunicationsException e) {
+                JOptionPane.showMessageDialog(null, "There is a problem contacting the server");
+            } catch (SQLException sq) {
+                JOptionPane.showMessageDialog(null, sq.getMessage());
             }
-        } catch (CommunicationsException e) {
-            JOptionPane.showMessageDialog(null, "There is a problem contacting the server");
-        }catch (SQLException sq){
-            JOptionPane.showMessageDialog(null, sq.getMessage());
-    
 
     }//GEN-LAST:event_jButton1ActionPerformed
     }
