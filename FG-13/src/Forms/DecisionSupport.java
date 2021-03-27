@@ -15,17 +15,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Shiro
- */
-public class prediction extends javax.swing.JFrame {
+public class DecisionSupport extends javax.swing.JFrame {
 
     static Connection con;
 
-    /**
-     * Creates new form prediction
-     */
     private void iniData() {
         int DoctorN = 0;
         int NurseN = 0;
@@ -34,8 +27,6 @@ public class prediction extends javax.swing.JFrame {
         int GlovesN = 0;
         int FaceshieldN = 0;
         int BedC = 0;
-        int ICUC = 0;
-        String TempBuild = "";
         int DoctorC = 0;
         int NurseC = 0;
         int MaskC = 0;
@@ -45,14 +36,13 @@ public class prediction extends javax.swing.JFrame {
         int NumOfBeds = 0;
         int NumOfICU = 0;
         int patient = 0;
+        int icuPatient = 0;
+        //--------------
         con = DB.getConnection();
-        System.out.println("con is done");
-
         PreparedStatement pst;
         Statement stmt;
         ResultSet rs;
-        ResultSet rs1;
-
+        //-------------
         try {
             String command = "select * from employee";
             pst = con.prepareStatement(command);
@@ -66,7 +56,7 @@ public class prediction extends javax.swing.JFrame {
                     NurseN++;
                 }
             }
-
+            //-----------------
             stmt = con.createStatement();
             rs = stmt.executeQuery("select Masks ,Gloves , FaceShiled , Gowns  from ppe");
             rs.next();
@@ -77,11 +67,11 @@ public class prediction extends javax.swing.JFrame {
 
             stmt = con.createStatement();
             rs = stmt.executeQuery("select NumberOfBeds , NumberOfICU from building");
-            rs.next();
-            NumOfBeds = rs.getInt(1);
-            NumOfICU = rs.getInt(2);
-
-            rs = stmt.executeQuery("select DoctorC , NurseC , MaskC ,glovesC , faceshieldC , gownsC , bedsC , icuC from Capacity");
+            while (rs.next()) {
+                NumOfBeds += rs.getInt(1);
+                NumOfICU += rs.getInt(2);
+            }
+            rs = stmt.executeQuery("select DoctorC , NurseC , MaskC ,glovesC , faceshieldC , gownsC from Capacity");
             rs.next();
             DoctorC = rs.getInt(1);
             NurseC = rs.getInt(2);
@@ -89,8 +79,6 @@ public class prediction extends javax.swing.JFrame {
             glovesC = rs.getInt(4);
             faceshieldC = rs.getInt(5);
             gownsC = rs.getInt(6);
-            BedC = rs.getInt(7);
-            ICUC = rs.getInt(8);
 
             DoctorN = DoctorC - DoctorN;
             NurseN = NurseC - NurseN;
@@ -98,9 +86,12 @@ public class prediction extends javax.swing.JFrame {
             GlovesN = glovesC - GlovesN;
             FaceshieldN = faceshieldC - FaceshieldN;
             GownsN = gownsC - GownsN;
-            NumOfBeds = BedC - NumOfBeds;
-            NumOfICU = ICUC - NumOfICU;
+            rs = stmt.executeQuery("select id from patient where ICU='Yes'");
+            while (rs.next()) {
+                icuPatient++;
 
+            }
+            //----------------
             rs = stmt.executeQuery("select COUNT(*) from patient");
             rs.next();
             patient = rs.getInt(1);
@@ -113,19 +104,63 @@ public class prediction extends javax.swing.JFrame {
 
                 jTextField8.setText(no);
             }
+            NumOfBeds = NumOfBeds - patient;
+            NumOfICU = NumOfICU - icuPatient;
+
         } catch (CommunicationsException e) {
             JOptionPane.showMessageDialog(null, "There is a problem contacting the server");
         } catch (SQLException ee) {
             JOptionPane.showMessageDialog(null, ee);
         }
-        jTextField1.setText(String.valueOf(DoctorN));
-        jTextField2.setText(String.valueOf(NurseN));
-        jTextField4.setText(String.valueOf(MaskN));
-        jTextField5.setText(String.valueOf(GlovesN));
-        jTextField6.setText(String.valueOf(FaceshieldN));
-        jTextField7.setText(String.valueOf(GownsN));
-        jTextField9.setText(String.valueOf(NumOfBeds));
-        jTextField10.setText(String.valueOf(NumOfICU));
+
+        if (DoctorN < 0) {
+            jTextField1.setText(String.valueOf("0"));
+        } else {
+            jTextField1.setText(String.valueOf(Math.abs(DoctorN)));
+        }
+
+        if (NurseN < 0) {
+            jTextField2.setText(String.valueOf("0"));
+        } else {
+            jTextField2.setText(String.valueOf(Math.abs(NurseN)));
+        }
+
+        if (MaskN < 0) {
+            jTextField4.setText(String.valueOf("0"));
+        } else {
+            jTextField4.setText(String.valueOf(Math.abs(MaskN)));
+        }
+
+        if (GlovesN < 0) {
+            jTextField5.setText(String.valueOf("0"));
+        } else {
+            jTextField5.setText(String.valueOf(Math.abs(GlovesN)));
+        }
+
+        if (FaceshieldN < 0) {
+            jTextField6.setText(String.valueOf("0"));
+        } else {
+            jTextField6.setText(String.valueOf(Math.abs(FaceshieldN)));
+        }
+
+        if (GownsN < 0) {
+            jTextField7.setText(String.valueOf("0"));
+        } else {
+            jTextField7.setText(String.valueOf(Math.abs(GownsN)));
+        }
+
+        if (NumOfBeds > 0) {
+            jTextField9.setText(String.valueOf("0"));
+        } else {
+            jTextField9.setText(String.valueOf(Math.abs(NumOfBeds)));
+        }
+
+        if (NumOfICU > 0) {
+            jTextField10.setText(String.valueOf("0"));
+        } else {
+            jTextField10.setText(String.valueOf(Math.abs(NumOfICU)));
+        }
+
         //locking user input
         jTextField1.setEditable(false);
         jTextField2.setEditable(false);
@@ -138,7 +173,7 @@ public class prediction extends javax.swing.JFrame {
         jTextField10.setEditable(false);
     }
 
-    public prediction() {
+    public DecisionSupport() {
         initComponents();
         iniData();
         setLocationRelativeTo(null);
@@ -243,28 +278,27 @@ public class prediction extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(41, 41, 41)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(102, 102, 102)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel7)
+                        .addGap(50, 50, 50))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7))
-                        .addGap(50, 50, 50)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(107, 107, 107)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -400,20 +434,21 @@ public class prediction extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(prediction.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DecisionSupport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(prediction.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DecisionSupport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(prediction.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DecisionSupport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(prediction.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DecisionSupport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new prediction().setVisible(true);
+                new DecisionSupport().setVisible(true);
             }
         });
     }
