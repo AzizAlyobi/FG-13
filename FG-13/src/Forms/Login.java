@@ -5,9 +5,11 @@
  */
 package Forms;
 
+import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 
@@ -200,8 +202,11 @@ public class Login extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "The user is not found");
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+        } catch (CommunicationsException e) {
+            JOptionPane.showMessageDialog(null, "There is a problem contacting the server");
+        }catch (SQLException sq){
+            JOptionPane.showMessageDialog(null, sq.getMessage());
+    
 
     }//GEN-LAST:event_jButton1ActionPerformed
     }

@@ -1,9 +1,11 @@
-package sample;
+package Forms;
 
+import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 
@@ -300,53 +302,55 @@ public class PPEinput extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        
-         if (jTextField1.getText().isEmpty() || jTextField2.getText().isEmpty() || jTextField3.getText().isEmpty()  || jTextField4.getText().isEmpty()) {
+
+        if (jTextField1.getText().isEmpty() || jTextField2.getText().isEmpty() || jTextField3.getText().isEmpty() || jTextField4.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please Fill in The blanks for the PPE Restock");
-        }else{
-        
-        int masks = 0;
-        int gloves = 0;
-        int faceshiled = 0;
-        int gowns = 0;
+        } else {
 
-        con = DB.getConnection();
-        System.out.println("con is done");
+            int masks = 0;
+            int gloves = 0;
+            int faceshiled = 0;
+            int gowns = 0;
 
-        PreparedStatement pst;
-        Statement stmt;
-        ResultSet rs;
+            con = DB.getConnection();
+            System.out.println("con is done");
 
-        try {
-            stmt = con.createStatement();
-            rs = stmt.executeQuery("select * from ppe");
-            rs.next();
-            masks = rs.getInt(1);
-            gloves = rs.getInt(2);
-            faceshiled = rs.getInt(3);
-            gowns = rs.getInt(4);
+            PreparedStatement pst;
+            Statement stmt;
+            ResultSet rs;
 
-            masks += Integer.parseInt(jTextField5.getText());
-            gloves += Integer.parseInt(jTextField6.getText());
-            faceshiled += Integer.parseInt(jTextField7.getText());
-            gowns += Integer.parseInt(jTextField8.getText());
-            String command = "UPDATE ppe SET masks =  ? , gloves = ? , faceshiled = ? , gowns = ? ";
-            pst = con.prepareStatement(command);
-            pst.setInt(1, masks);
-            pst.setInt(2, gloves);
-            pst.setInt(3, faceshiled);
-            pst.setInt(4, gowns);
+            try {
+                stmt = con.createStatement();
+                rs = stmt.executeQuery("select * from ppe");
+                rs.next();
+                masks = rs.getInt(1);
+                gloves = rs.getInt(2);
+                faceshiled = rs.getInt(3);
+                gowns = rs.getInt(4);
 
-            pst.executeUpdate();
+                masks += Integer.parseInt(jTextField5.getText());
+                gloves += Integer.parseInt(jTextField6.getText());
+                faceshiled += Integer.parseInt(jTextField7.getText());
+                gowns += Integer.parseInt(jTextField8.getText());
+                String command = "UPDATE ppe SET masks =  ? , gloves = ? , faceshiled = ? , gowns = ? ";
+                pst = con.prepareStatement(command);
+                pst.setInt(1, masks);
+                pst.setInt(2, gloves);
+                pst.setInt(3, faceshiled);
+                pst.setInt(4, gowns);
 
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, e);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-            System.out.println("Missing Input");
+                int oi = pst.executeUpdate();
+                if (oi == 1) {
+                    JOptionPane.showMessageDialog(null, "The Restock was added successfully ");
+                }
+
+            } catch (CommunicationsException e) {
+                JOptionPane.showMessageDialog(null, "There is a problem contacting the server");
+            } catch (SQLException sq) {
+                JOptionPane.showMessageDialog(null, sq.getMessage());
+            }
+            
         }
-        JOptionPane.showMessageDialog(null, " The PPE Restock has added");
-         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
@@ -355,73 +359,78 @@ public class PPEinput extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        
-        if (jTextField1.getText().isEmpty() || jTextField2.getText().isEmpty() || jTextField3.getText().isEmpty()  || jTextField4.getText().isEmpty()) {
+
+        if (jTextField1.getText().isEmpty() || jTextField2.getText().isEmpty() || jTextField3.getText().isEmpty() || jTextField4.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please Fill in The blanks for the used PPE");
-        }else{
-        
-        
-        int masks = 0;
-        int gloves = 0;
-        int faceshiled = 0;
-        int gowns = 0;
+        } else {
 
-        int masksus = 0;
-        int glovesus = 0;
-        int faceshiledus = 0;
-        int gownsus = 0;
+            int masks = 0;
+            int gloves = 0;
+            int faceshiled = 0;
+            int gowns = 0;
 
-        con = DB.getConnection();
-        System.out.println("con is done");
+            int masksus = 0;
+            int glovesus = 0;
+            int faceshiledus = 0;
+            int gownsus = 0;
 
-        PreparedStatement pst;
-        Statement stmt;
-        ResultSet rs;
+            con = DB.getConnection();
+            System.out.println("con is done");
 
-        try {
-            stmt = con.createStatement();
-            rs = stmt.executeQuery("select * from ppe");
-            rs.next();
-            masks = rs.getInt(1);
-            gloves = rs.getInt(2);
-            faceshiled = rs.getInt(3);
-            gowns = rs.getInt(4);
-            masksus = rs.getInt(5);
-            glovesus = rs.getInt(6);
-            faceshiledus = rs.getInt(7);
-            gownsus = rs.getInt(8);
+            PreparedStatement pst;
+            Statement stmt;
+            ResultSet rs;
 
-            masksus += Integer.parseInt(jTextField4.getText());
-            glovesus += Integer.parseInt(jTextField1.getText());
-            faceshiledus += Integer.parseInt(jTextField2.getText());
-            gownsus += Integer.parseInt(jTextField3.getText());
+            try {
+                stmt = con.createStatement();
+                rs = stmt.executeQuery("select * from ppe");
+                rs.next();
+                masks = rs.getInt(1);
+                gloves = rs.getInt(2);
+                faceshiled = rs.getInt(3);
+                gowns = rs.getInt(4);
+                masksus = rs.getInt(5);
+                glovesus = rs.getInt(6);
+                faceshiledus = rs.getInt(7);
+                gownsus = rs.getInt(8);
 
-            String command2 = "UPDATE ppe SET MasksUsed =  ? , GlovesUsed = ? , FaceShiledUsed = ? , GownsUsed = ? ";
-            pst = con.prepareStatement(command2);
-            pst.setInt(1, masksus);
-            pst.setInt(2, glovesus);
-            pst.setInt(3, faceshiledus);
-            pst.setInt(4, gownsus);
+                masksus += Integer.parseInt(jTextField4.getText());
+                glovesus += Integer.parseInt(jTextField1.getText());
+                faceshiledus += Integer.parseInt(jTextField2.getText());
+                gownsus += Integer.parseInt(jTextField3.getText());
 
-            pst.executeUpdate();
+                String command2 = "UPDATE ppe SET MasksUsed =  ? , GlovesUsed = ? , FaceShiledUsed = ? , GownsUsed = ? ";
+                pst = con.prepareStatement(command2);
+                pst.setInt(1, masksus);
+                pst.setInt(2, glovesus);
+                pst.setInt(3, faceshiledus);
+                pst.setInt(4, gownsus);
 
-            masks -= Integer.parseInt(jTextField4.getText());
-            gloves -= Integer.parseInt(jTextField1.getText());
-            faceshiled -= Integer.parseInt(jTextField2.getText());
-            gowns -= Integer.parseInt(jTextField3.getText());
-            String command = "UPDATE ppe SET Masks =  ? , Gloves = ? , FaceShiled = ? , Gowns = ? ";
-            pst = con.prepareStatement(command);
-            pst.setInt(1, masks);
-            pst.setInt(2, gloves);
-            pst.setInt(3, faceshiled);
-            pst.setInt(4, gowns);
+                int oi = pst.executeUpdate();
 
-            pst.executeUpdate();
+                masks -= Integer.parseInt(jTextField4.getText());
+                gloves -= Integer.parseInt(jTextField1.getText());
+                faceshiled -= Integer.parseInt(jTextField2.getText());
+                gowns -= Integer.parseInt(jTextField3.getText());
+                String command = "UPDATE ppe SET Masks =  ? , Gloves = ? , FaceShiled = ? , Gowns = ? ";
+                pst = con.prepareStatement(command);
+                pst.setInt(1, masks);
+                pst.setInt(2, gloves);
+                pst.setInt(3, faceshiled);
+                pst.setInt(4, gowns);
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
-        JOptionPane.showMessageDialog(null, " The PPE used has added");
+                int oii = pst.executeUpdate();
+                
+                if (oi == 1 && oii == 1) {
+                    JOptionPane.showMessageDialog(null, "The Used was recorded successfully ");
+                }
+
+            } catch (CommunicationsException e) {
+                JOptionPane.showMessageDialog(null, "There is a problem contacting the server");
+            } catch (SQLException sq) {
+                JOptionPane.showMessageDialog(null, sq.getMessage());
+            }
+            
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

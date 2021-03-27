@@ -3,20 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sample;
+package Forms;
 
+import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import static sample.Login.con;
 
 /**
  *
  * @author Shiro
  */
 public class admin extends javax.swing.JFrame {
-    
+
     static Connection con = DB.getConnection();
 
     public admin() {
@@ -225,8 +227,8 @@ public class admin extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-        if (jComboBox1.getSelectedItem().equals("Please select")) {
-            jComboBox1.grabFocus();
+        if (jComboBox1.getSelectedIndex() == 0) {
+
             JOptionPane.showMessageDialog(null, "Please select the premission");
         } else {
             String id = jTextField1.getText();
@@ -252,16 +254,20 @@ public class admin extends javax.swing.JFrame {
                 if (oi > 0) {
                     JOptionPane.showMessageDialog(null, "The user " + id + " was added successfully ");
                 }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e);
-
+            } catch (MySQLIntegrityConstraintViolationException ex) {
+                //handle ex
+                JOptionPane.showMessageDialog(null, "You cant enter this username please enter another username ");
+            } catch (CommunicationsException e) {
+                JOptionPane.showMessageDialog(null, "There is a problem contacting the server");
+            } catch (SQLException sq) {
+                JOptionPane.showMessageDialog(null, sq.getMessage());
             }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        if (jComboBox1.getSelectedItem().equals("Please select")) {
+        if (jComboBox1.getSelectedIndex() == 0) {
             jComboBox1.grabFocus();
             JOptionPane.showMessageDialog(null, "Please select the premission");
         } else {
@@ -289,9 +295,13 @@ public class admin extends javax.swing.JFrame {
                 if (oi > 0) {
                     JOptionPane.showMessageDialog(null, "The user " + id + " was deleted successfully ");
                 }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e);
-
+            } catch (MySQLIntegrityConstraintViolationException ex) {
+                //handle ex
+                JOptionPane.showMessageDialog(null, "You cant enter this username please enter another username ");
+            } catch (CommunicationsException e) {
+                JOptionPane.showMessageDialog(null, "There is a problem contacting the server");
+            } catch (SQLException sq) {
+                JOptionPane.showMessageDialog(null, sq.getMessage());
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed

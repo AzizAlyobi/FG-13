@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sample;
+package Forms;
 
+import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
@@ -25,10 +27,29 @@ public class Patient_input extends javax.swing.JFrame {
     /**
      * Creates new form input
      */
+    public void loadDoctorsId() {
+        con = DB.getConnection();
+        ResultSet rs;
+        String sql = "Select id from employee where job='Doctor'";
+        try {
+            pst = con.prepareStatement(sql);
+            rs = pst.executeQuery(sql);
+            while (rs.next()) {
+                String id = rs.getString(1);
+                jComboBox3.addItem(id);
+
+            }
+        } catch (CommunicationsException e) {
+            JOptionPane.showMessageDialog(null, "There is a problem contacting the server");
+        } catch (SQLException sq) {
+            JOptionPane.showMessageDialog(null, sq.getMessage());
+        }
+    }
+
     public Patient_input() {
         initComponents();
         setLocationRelativeTo(null);
-
+        loadDoctorsId();
     }
 
     /**
@@ -44,7 +65,6 @@ public class Patient_input extends javax.swing.JFrame {
         jTextField2 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
-        jTextField6 = new javax.swing.JTextField();
         jButton5 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -58,6 +78,7 @@ public class Patient_input extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         jComboBox2 = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
+        jComboBox3 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -100,17 +121,6 @@ public class Patient_input extends javax.swing.JFrame {
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
-            }
-        });
-
-        jTextField6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField6ActionPerformed(evt);
-            }
-        });
-        jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTextField6KeyPressed(evt);
             }
         });
 
@@ -175,6 +185,8 @@ public class Patient_input extends javax.swing.JFrame {
             }
         });
 
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -184,22 +196,21 @@ public class Patient_input extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(58, 58, 58)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(jLabel4)
+                                    .addGap(50, 50, 50))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel6)
+                                    .addGap(59, 59, 59)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addGap(50, 50, 50))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addGap(59, 59, 59)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
-                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGap(28, 28, 28)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
+                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(55, 55, 55)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
@@ -240,14 +251,14 @@ public class Patient_input extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(65, 65, 65)
+                .addGap(64, 64, 64)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
                     .addComponent(jLabel8)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(49, 49, 49)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(48, 48, 48)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(61, 61, 61)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -263,43 +274,45 @@ public class Patient_input extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-        if (jTextField1.getText().isEmpty() || jTextField2.getText().isEmpty() || jTextField4.getText().isEmpty() || jTextField6.getText().isEmpty()) {
+        if (jTextField1.getText().isEmpty() || jTextField2.getText().isEmpty() || jTextField4.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please Fill in The blanks");
-        }else if (jComboBox1.getSelectedIndex()==0 ||jComboBox2.getSelectedIndex()==0) {
+        } else if (jComboBox1.getSelectedIndex() == 0 || jComboBox2.getSelectedIndex() == 0 || jComboBox3.getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(null, "Please choose from the drop menu");
-        }else {
-        
-        
-        
-        String name = jTextField1.getText();
-        int id = Integer.parseInt(jTextField4.getText());
-        int age = Integer.parseInt(jTextField2.getText());
-        String gender = String.valueOf(jComboBox2.getSelectedItem());
-        String icu = String.valueOf(jComboBox1.getSelectedItem());
-        int doctorId = Integer.parseInt(jTextField6.getText());
+        } else {
 
-        con = DB.getConnection();
-        System.out.println("con is done");
+            String name = jTextField1.getText();
+            int id = Integer.parseInt(jTextField4.getText());
+            int age = Integer.parseInt(jTextField2.getText());
+            String gender = String.valueOf(jComboBox2.getSelectedItem());
+            String icu = String.valueOf(jComboBox1.getSelectedItem());
+            int doctorId = Integer.parseInt((String) jComboBox3.getSelectedItem());
 
-        try {
-            String command = "insert into patient values (?,?,?,?,?,?)";
-            pst = con.prepareStatement(command);
-            pst.setInt(1, id);
-            pst.setString(2, name);
-            pst.setInt(3, age);
-            pst.setString(4, gender);
-            pst.setString(5, icu);
-            pst.setInt(6, doctorId);
-            pst.executeUpdate();
+            con = DB.getConnection();
+            System.out.println("con is done");
 
-        } catch (MySQLIntegrityConstraintViolationException ex) {
-            //handle ex
-            JOptionPane.showMessageDialog(null, "You cant enter this id record please enter another id ");
-        } catch (Exception e) {
-            System.out.println("Missing Input");
-            JOptionPane.showMessageDialog(null, e);
+            try {
+                String command = "insert into patient values (?,?,?,?,?,?)";
+                pst = con.prepareStatement(command);
+                pst.setInt(1, id);
+                pst.setString(2, name);
+                pst.setInt(3, age);
+                pst.setString(4, gender);
+                pst.setString(5, icu);
+                pst.setInt(6, doctorId);
+                int oi = pst.executeUpdate();
 
-        }
+                if (oi == 1) {
+                    JOptionPane.showMessageDialog(null, "The Patient " + id + " was added successfully ");
+                }
+
+            } catch (MySQLIntegrityConstraintViolationException ex) {
+                //handle ex
+                JOptionPane.showMessageDialog(null, "You cant enter this id record please enter another id ");
+            } catch (CommunicationsException e) {
+                JOptionPane.showMessageDialog(null, "There is a problem contacting the server");
+            } catch (SQLException sq) {
+                JOptionPane.showMessageDialog(null, sq.getMessage());
+            }
         }
 
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -311,10 +324,6 @@ public class Patient_input extends javax.swing.JFrame {
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
-
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField6ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
@@ -332,17 +341,6 @@ public class Patient_input extends javax.swing.JFrame {
             jTextField2.setEditable(false);
         }
     }//GEN-LAST:event_jTextField2KeyPressed
-
-    private void jTextField6KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyPressed
-        // TODO add your handling code here:
-        char c = evt.getKeyChar();
-
-        if (Character.isDigit(c) || Character.isISOControl(c)) {
-            jTextField6.setEditable(true);
-        } else {
-            jTextField6.setEditable(false);
-        }
-    }//GEN-LAST:event_jTextField6KeyPressed
 
     private void jTextField4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyPressed
         // TODO add your handling code here:
@@ -370,7 +368,7 @@ public class Patient_input extends javax.swing.JFrame {
         // TODO add your handling code here:
         int randomnumber = (int) Math.floor(Math.random() * 10000 + 1);
         jTextField4.setText(String.valueOf(randomnumber));
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -418,6 +416,7 @@ public class Patient_input extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -430,6 +429,5 @@ public class Patient_input extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField6;
     // End of variables declaration//GEN-END:variables
 }

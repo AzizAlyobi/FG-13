@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sample;
+package Forms;
 
+import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.Connection;
@@ -13,8 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
-import static sample.HRReport.con;
-import static sample.PPEReport.con;
 
 /**
  *
@@ -27,158 +26,121 @@ public class prediction extends javax.swing.JFrame {
     /**
      * Creates new form prediction
      */
-    private void initSelfListener() {
-        WindowListener taskStarterWindowListener = new WindowListener() {
-            @Override
-            public void windowOpened(WindowEvent e) {
-                int DoctorN = 0;
-                int NurseN = 0;
-                int MaskN = 0;
-                int GownsN = 0;
-                int GlovesN = 0;
-                int FaceshieldN = 0;
-                int BedC = 0;
-                int ICUC = 0;
-                String TempBuild = "";
-                int DoctorC = 0;
-                int NurseC = 0;
-                int MaskC = 0;
-                int glovesC = 0;
-                int faceshieldC = 0;
-                int gownsC = 0;
-                int NumOfBeds = 0;
-                int NumOfICU = 0;
-                int patient =0;
-                con = DB.getConnection();
-                System.out.println("con is done");
+    private void iniData() {
+        int DoctorN = 0;
+        int NurseN = 0;
+        int MaskN = 0;
+        int GownsN = 0;
+        int GlovesN = 0;
+        int FaceshieldN = 0;
+        int BedC = 0;
+        int ICUC = 0;
+        String TempBuild = "";
+        int DoctorC = 0;
+        int NurseC = 0;
+        int MaskC = 0;
+        int glovesC = 0;
+        int faceshieldC = 0;
+        int gownsC = 0;
+        int NumOfBeds = 0;
+        int NumOfICU = 0;
+        int patient = 0;
+        con = DB.getConnection();
+        System.out.println("con is done");
 
-                PreparedStatement pst;
-                Statement stmt;
-                ResultSet rs;
-                ResultSet rs1;
+        PreparedStatement pst;
+        Statement stmt;
+        ResultSet rs;
+        ResultSet rs1;
 
-                try {
-                    String command = "select * from employee";
-                    pst = con.prepareStatement(command);
-                    DoctorN = 0;
-                    NurseN = 0;
-                    rs = pst.executeQuery();
-                    while (rs.next()) {
-                        if (rs.getString(5).equalsIgnoreCase("doctor")) {
-                            DoctorN++;
-                        } else {
-                            NurseN++;
-                        }
-                    }
-
-                    stmt = con.createStatement();
-                    rs = stmt.executeQuery("select Masks ,Gloves , FaceShiled , Gowns  from ppe");
-                    rs.next();
-                    MaskN = rs.getInt(1);
-                    GlovesN = rs.getInt(2);
-                    FaceshieldN = rs.getInt(3);
-                    GownsN = rs.getInt(4);
-
-                    stmt = con.createStatement();
-                    rs = stmt.executeQuery("select NumberOfBeds , NumberOfICU from building");
-                    rs.next();
-                    NumOfBeds = rs.getInt(1);
-                    NumOfICU = rs.getInt(2);
-
-                    rs = stmt.executeQuery("select DoctorC , NurseC , MaskC ,glovesC , faceshieldC , gownsC , bedsC , icuC from Capacity");
-                    rs.next();
-                    DoctorC = rs.getInt(1);
-                    NurseC = rs.getInt(2);
-                    MaskC = rs.getInt(3);
-                    glovesC = rs.getInt(4);
-                    faceshieldC = rs.getInt(5);
-                    gownsC = rs.getInt(6);
-                    BedC = rs.getInt(7);
-                    ICUC = rs.getInt(8);
-
-                    DoctorN = DoctorC - DoctorN;
-                    NurseN = NurseC - NurseN;
-                    MaskN = MaskC - MaskN;
-                    GlovesN = glovesC - GlovesN;
-                    FaceshieldN = faceshieldC - FaceshieldN;
-                    GownsN = gownsC - GownsN;
-                    NumOfBeds = BedC - NumOfBeds;
-                    NumOfICU = ICUC - NumOfICU;
-                    
-                    rs = stmt.executeQuery("select COUNT(*) from patient");
-                    rs.next();
-                    patient = rs.getInt(1);
-                    if (patient > BedC){
-                    String yes="Yes";
-                        
-                        jTextField8.setText(yes);
-                    }else{
-                        String no="No";
-                     
-                        jTextField8.setText(no);
-                    }
-                } catch (SQLException ee) {
-                    JOptionPane.showMessageDialog(null, ee);
+        try {
+            String command = "select * from employee";
+            pst = con.prepareStatement(command);
+            DoctorN = 0;
+            NurseN = 0;
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                if (rs.getString(5).equalsIgnoreCase("doctor")) {
+                    DoctorN++;
+                } else {
+                    NurseN++;
                 }
-                jTextField1.setText(String.valueOf(DoctorN));
-                jTextField2.setText(String.valueOf(NurseN));
-                jTextField4.setText(String.valueOf(MaskN));
-                jTextField5.setText(String.valueOf(GlovesN));
-                jTextField6.setText(String.valueOf(FaceshieldN));
-                jTextField7.setText(String.valueOf(GownsN));
-                jTextField9.setText(String.valueOf(NumOfBeds));
-                jTextField10.setText(String.valueOf(NumOfICU));
-                //locking user input
-                jTextField1.setEditable(false);
-                jTextField2.setEditable(false);
-                jTextField4.setEditable(false);
-                jTextField5.setEditable(false);
-                jTextField6.setEditable(false);
-                jTextField7.setEditable(false);
-                jTextField8.setEditable(false);
-                jTextField9.setEditable(false);
-                jTextField10.setEditable(false);
-
             }
 
-            @Override
-            public void windowClosing(WindowEvent e) {
-                //Do nothing...Or something...You decide!
-            }
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("select Masks ,Gloves , FaceShiled , Gowns  from ppe");
+            rs.next();
+            MaskN = rs.getInt(1);
+            GlovesN = rs.getInt(2);
+            FaceshieldN = rs.getInt(3);
+            GownsN = rs.getInt(4);
 
-            @Override
-            public void windowClosed(WindowEvent e) {
-                //Do nothing...Or drink coffee...NVM; always drink coffee!
-            }
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("select NumberOfBeds , NumberOfICU from building");
+            rs.next();
+            NumOfBeds = rs.getInt(1);
+            NumOfICU = rs.getInt(2);
 
-            @Override
-            public void windowIconified(WindowEvent e) {
-                //Do nothing...Or do EVERYTHING!
-            }
+            rs = stmt.executeQuery("select DoctorC , NurseC , MaskC ,glovesC , faceshieldC , gownsC , bedsC , icuC from Capacity");
+            rs.next();
+            DoctorC = rs.getInt(1);
+            NurseC = rs.getInt(2);
+            MaskC = rs.getInt(3);
+            glovesC = rs.getInt(4);
+            faceshieldC = rs.getInt(5);
+            gownsC = rs.getInt(6);
+            BedC = rs.getInt(7);
+            ICUC = rs.getInt(8);
 
-            @Override
-            public void windowDeiconified(WindowEvent e) {
-                //Do nothing...Or break the law...
-            }
+            DoctorN = DoctorC - DoctorN;
+            NurseN = NurseC - NurseN;
+            MaskN = MaskC - MaskN;
+            GlovesN = glovesC - GlovesN;
+            FaceshieldN = faceshieldC - FaceshieldN;
+            GownsN = gownsC - GownsN;
+            NumOfBeds = BedC - NumOfBeds;
+            NumOfICU = ICUC - NumOfICU;
 
-            @Override
-            public void windowActivated(WindowEvent e) {
-                //Do nothing...Procrastinate like me!
-            }
+            rs = stmt.executeQuery("select COUNT(*) from patient");
+            rs.next();
+            patient = rs.getInt(1);
+            if (patient > BedC) {
+                String yes = "Yes";
 
-            @Override
-            public void windowDeactivated(WindowEvent e) {
-                //Do nothing...And please don't notice I have way too much free time today...
-            }
-        };
+                jTextField8.setText(yes);
+            } else {
+                String no = "No";
 
-        //Here is where the magic happens! We make (a listener within) the frame start listening to the frame's own events!
-        this.addWindowListener(taskStarterWindowListener);
+                jTextField8.setText(no);
+            }
+        } catch (CommunicationsException e) {
+            JOptionPane.showMessageDialog(null, "There is a problem contacting the server");
+        } catch (SQLException ee) {
+            JOptionPane.showMessageDialog(null, ee);
+        }
+        jTextField1.setText(String.valueOf(DoctorN));
+        jTextField2.setText(String.valueOf(NurseN));
+        jTextField4.setText(String.valueOf(MaskN));
+        jTextField5.setText(String.valueOf(GlovesN));
+        jTextField6.setText(String.valueOf(FaceshieldN));
+        jTextField7.setText(String.valueOf(GownsN));
+        jTextField9.setText(String.valueOf(NumOfBeds));
+        jTextField10.setText(String.valueOf(NumOfICU));
+        //locking user input
+        jTextField1.setEditable(false);
+        jTextField2.setEditable(false);
+        jTextField4.setEditable(false);
+        jTextField5.setEditable(false);
+        jTextField6.setEditable(false);
+        jTextField7.setEditable(false);
+        jTextField8.setEditable(false);
+        jTextField9.setEditable(false);
+        jTextField10.setEditable(false);
     }
 
     public prediction() {
         initComponents();
-        initSelfListener();
+        iniData();
         setLocationRelativeTo(null);
 
     }

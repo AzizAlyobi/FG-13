@@ -5,16 +5,13 @@
  */
 package Forms;
 
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
-
 
 /**
  *
@@ -27,94 +24,56 @@ public class HRReport extends javax.swing.JFrame {
     /**
      * Creates new form OutPut
      */
-    private void initSelfListeners() {
-        WindowListener taskStarterWindowListener = new WindowListener() {
-            @Override
-            public void windowOpened(WindowEvent e) {
-                System.out.println("Performing task..."); //Perform task here. In this case, we are simulating a startup (only once) time-consuming task that would use a worker.
-                double PerDoctor = 0;
-                double PerNurse = 0;
-                int NumOfPatient = 0;
-                
-                con = DB.getConnection();
-                System.out.println("con is done");
+    private void iniData() {
+        double PerDoctor = 0;
+        double PerNurse = 0;
+        int NumOfPatient = 0;
 
-                PreparedStatement pst;
+        con = DB.getConnection();
+        System.out.println("con is done");
 
-                try {
-                    String command = "select * from employee";
-                    pst = con.prepareStatement(command);
-                    int PerDoctors = 0;
-                    int PerNurses = 0;
-                    ResultSet rs = pst.executeQuery();
-                    while (rs.next()) {
-                        if (rs.getString(5).equalsIgnoreCase("doctor")) {
-                            PerDoctors++;
-                        } else {
-                            PerNurses++;
-                        }
-                    }
-                    Statement stmt = con.createStatement();
-                    rs = stmt.executeQuery("select * from patient");
-                    while (rs.next()) {
-                        NumOfPatient++;
-                    }
+        PreparedStatement pst;
 
-                    PerDoctor = Double.valueOf(PerDoctors) / Double.valueOf(NumOfPatient);
-                    PerNurse = Double.valueOf(PerNurses) / Double.valueOf(NumOfPatient);
-
-                } catch (SQLException ee) {
-                    JOptionPane.showMessageDialog(null, ee);
+        try {
+            String command = "select * from employee";
+            pst = con.prepareStatement(command);
+            int PerDoctors = 0;
+            int PerNurses = 0;
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                if (rs.getString(5).equalsIgnoreCase("doctor")) {
+                    PerDoctors++;
+                } else {
+                    PerNurses++;
                 }
-                
-                jTextField1.setText(String.format("%.02f", PerDoctor));
-                jTextField2.setText(String.format("%.02f", PerNurse));
-                jTextField3.setText(String.valueOf(NumOfPatient));
-                // locking user input
-                 jTextField1.setEditable(false);
-                 jTextField2.setEditable(false);
-                 jTextField3.setEditable(false);
-                
+            }
+            Statement stmt = con.createStatement();
+            rs = stmt.executeQuery("select * from patient");
+            while (rs.next()) {
+                NumOfPatient++;
             }
 
-            @Override
-            public void windowClosing(WindowEvent e) {
+            PerDoctor = Double.valueOf(PerDoctors) / Double.valueOf(NumOfPatient);
+            PerNurse = Double.valueOf(PerNurses) / Double.valueOf(NumOfPatient);
 
-            }
+        } catch (CommunicationsException e) {
+            JOptionPane.showMessageDialog(null, "There is a problem contacting the server");
+        } catch (SQLException ee) {
+            JOptionPane.showMessageDialog(null, ee);
+        }
 
-            @Override
-            public void windowClosed(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowIconified(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowDeiconified(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowActivated(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowDeactivated(WindowEvent e) {
-
-            }
-        };
-
-        //Here is where the magic happens! We make (a listener within) the frame start listening to the frame's own events!
-        this.addWindowListener(taskStarterWindowListener);
+        jTextField1.setText(String.format("%.02f", PerDoctor));
+        jTextField2.setText(String.format("%.02f", PerNurse));
+        jTextField3.setText(String.valueOf(NumOfPatient));
+        // locking user input
+        jTextField1.setEditable(false);
+        jTextField2.setEditable(false);
+        jTextField3.setEditable(false);
     }
 
     public HRReport() {
         initComponents();
-        initSelfListeners();
+        iniData();
         setLocationRelativeTo(null);
 
     }
@@ -280,7 +239,7 @@ public class HRReport extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
+
                 new HRReport().setVisible(true);
             }
         });

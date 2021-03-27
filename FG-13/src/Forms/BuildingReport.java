@@ -5,8 +5,7 @@
  */
 package Forms;
 
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,82 +23,45 @@ public class BuildingReport extends javax.swing.JFrame {
     /**
      * Creates new form BuildingReport
      */
-    private void initSelfListeners() {
-        WindowListener taskStarterWindowListener = new WindowListener() {
-            @Override
-            public void windowOpened(WindowEvent e) {
-                System.out.println("Performing task..."); //Perform task here. In this case, we are simulating a startup (only once) time-consuming task that would use a worker.
-                int Nbuilding = 0;
-                int beds = 0;
-                int icu = 0;
+    private void iniData() {
+        int Nbuilding = 0;
+        int beds = 0;
+        int icu = 0;
 
-                con = DB.getConnection();
-                System.out.println("con is done");
+        con = DB.getConnection();
+        System.out.println("con is done");
 
-                PreparedStatement pst;
+        PreparedStatement pst;
 
-                try {
-                    String command = "select NumberOfBeds , NumberOfICU  from building";
-                    pst = con.prepareStatement(command);
+        try {
+            String command = "select NumberOfBeds , NumberOfICU  from building";
+            pst = con.prepareStatement(command);
 
-                    ResultSet rs = pst.executeQuery();
-                    while (rs.next()) {
-                        beds += rs.getInt(1);
-                        icu += rs.getInt(2);
-                        Nbuilding++;
-                    }
-
-                } catch (SQLException ee) {
-                    JOptionPane.showMessageDialog(null, ee);
-                }
-                jTextField8.setText(String.valueOf(Nbuilding));
-                jTextField9.setText(String.valueOf(beds));
-                jTextField10.setText(String.valueOf(icu));
-                //locking user input
-                
-                 jTextField9.setEditable(false);
-                 jTextField10.setEditable(false);
-                 jTextField8.setEditable(false);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                beds += rs.getInt(1);
+                icu += rs.getInt(2);
+                Nbuilding++;
             }
 
-            @Override
-            public void windowClosing(WindowEvent e) {
-                //Do nothing...Or something...You decide!
-            }
+        } catch (CommunicationsException e) {
+            JOptionPane.showMessageDialog(null, "There is a problem contacting the server");
+        } catch (SQLException ee) {
+            JOptionPane.showMessageDialog(null, ee);
+        }
+        jTextField8.setText(String.valueOf(Nbuilding));
+        jTextField9.setText(String.valueOf(beds));
+        jTextField10.setText(String.valueOf(icu));
+        //locking user input
 
-            @Override
-            public void windowClosed(WindowEvent e) {
-                //Do nothing...Or drink coffee...NVM; always drink coffee!
-            }
-
-            @Override
-            public void windowIconified(WindowEvent e) {
-                //Do nothing...Or do EVERYTHING!
-            }
-
-            @Override
-            public void windowDeiconified(WindowEvent e) {
-                //Do nothing...Or break the law...
-            }
-
-            @Override
-            public void windowActivated(WindowEvent e) {
-                //Do nothing...Procrastinate like me!
-            }
-
-            @Override
-            public void windowDeactivated(WindowEvent e) {
-                //Do nothing...And please don't notice I have way too much free time today...
-            }
-        };
-
-        //Here is where the magic happens! We make (a listener within) the frame start listening to the frame's own events!
-        this.addWindowListener(taskStarterWindowListener);
+        jTextField9.setEditable(false);
+        jTextField10.setEditable(false);
+        jTextField8.setEditable(false);
     }
 
     public BuildingReport() {
         initComponents();
-        initSelfListeners();
+        iniData();
         setLocationRelativeTo(null);
     }
 

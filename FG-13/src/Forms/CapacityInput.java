@@ -5,11 +5,12 @@
  */
 package Forms;
 
-import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
-import static Forms.BuildingReport.con;
+import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+import java.sql.SQLException;
 
 /**
  *
@@ -399,7 +400,7 @@ public class CapacityInput extends javax.swing.JFrame {
                 pst.setInt(5, glovesC);
                 pst.setInt(6, faceshiledC);
                 pst.setInt(7, gownsC);
-                pst.executeUpdate();
+                int oi = pst.executeUpdate();
 
                 // building table
                 command = "insert into building values (?,?,?,?)";
@@ -408,13 +409,21 @@ public class CapacityInput extends javax.swing.JFrame {
                 pst.setString(2, nameofbuilding);
                 pst.setInt(3, numberofbeds);
                 pst.setInt(4, numberoficu);
-                pst.executeUpdate();
+                int oii = pst.executeUpdate();
 
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e);
-                System.out.println("Missing Input");
+                if (oi == 1 && oii == 1) {
+                    JOptionPane.showMessageDialog(null, "The Building " + id + " was added successfully ");
+                }
+
+            } catch (MySQLIntegrityConstraintViolationException ex) {
+
+                JOptionPane.showMessageDialog(null, "You cant enter this id record please enter another id ");
+            } catch (CommunicationsException e) {
+                JOptionPane.showMessageDialog(null, "There is a problem contacting the server");
+            } catch (SQLException sq) {
+                JOptionPane.showMessageDialog(null, sq.getMessage());
             }
-            JOptionPane.showMessageDialog(null, " the capacity has added");
+
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

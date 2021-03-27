@@ -5,10 +5,12 @@
  */
 package Forms;
 
-import java.awt.event.KeyEvent;
+import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,9 +24,30 @@ public class DNinput extends javax.swing.JFrame {
     /**
      * Creates new form DoctorsAndNurse
      */
+    public void loadBuildingId() {
+        con = DB.getConnection();
+        ResultSet rs;
+        PreparedStatement pst;
+        String sql = "Select id from building";
+        try {
+            pst = con.prepareStatement(sql);
+            rs = pst.executeQuery(sql);
+            while (rs.next()) {
+                String id = rs.getString(1);
+                jComboBox3.addItem(id);
+
+            }
+        } catch (CommunicationsException e) {
+            JOptionPane.showMessageDialog(null, "There is a problem contacting the server");
+        } catch (SQLException sq) {
+            JOptionPane.showMessageDialog(null, sq.getMessage());
+        }
+    }
+
     public DNinput() {
         initComponents();
         setLocationRelativeTo(null);
+        loadBuildingId();
     }
 
     /**
@@ -48,12 +71,12 @@ public class DNinput extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jComboBox3 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -114,18 +137,6 @@ public class DNinput extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Gender");
 
-        jTextField6.setText(" ");
-        jTextField6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField6ActionPerformed(evt);
-            }
-        });
-        jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTextField6KeyPressed(evt);
-            }
-        });
-
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setText("Building ID");
 
@@ -159,6 +170,8 @@ public class DNinput extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -205,7 +218,7 @@ public class DNinput extends javax.swing.JFrame {
                         .addGap(25, 25, 25)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jComboBox2, 0, 172, Short.MAX_VALUE)
-                            .addComponent(jTextField6))))
+                            .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(45, 45, 45))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -215,7 +228,7 @@ public class DNinput extends javax.swing.JFrame {
                         .addGap(211, 211, 211))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(279, 279, 279))))
+                        .addGap(280, 280, 280))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -243,10 +256,10 @@ public class DNinput extends javax.swing.JFrame {
                     .addComponent(jLabel4))
                 .addGap(44, 44, 44)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
+                    .addComponent(jLabel6)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
@@ -270,43 +283,49 @@ public class DNinput extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        
-        if (jTextField1.getText().isEmpty() || jTextField2.getText().isEmpty() || jTextField4.getText().isEmpty() || jTextField5.getText().isEmpty() || jTextField6.getText().isEmpty()) {
+
+        if (jTextField1.getText().isEmpty() || jTextField2.getText().isEmpty() || jTextField4.getText().isEmpty() || jTextField5.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please Fill in The blanks");
-        }else if (jComboBox1.getSelectedIndex()==0 ||jComboBox2.getSelectedIndex()==0) {
+        } else if (jComboBox1.getSelectedIndex() == 0 || jComboBox2.getSelectedIndex() == 0 || jComboBox3.getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(null, "Please choose from the drop menu");
-        }else {
+        } else {
 
-        
+            String selectjob = String.valueOf(jComboBox1.getSelectedItem());
+            String name = jTextField1.getText();
+            int age = Integer.parseInt(jTextField2.getText());
+            String gender = String.valueOf(jComboBox2.getSelectedItem());
+            int id = Integer.parseInt(jTextField4.getText());
+            String department = jTextField5.getText() + " " + (String) jComboBox3.getSelectedItem();
 
-        String selectjob = String.valueOf(jComboBox1.getSelectedItem());
-        String name = jTextField1.getText();
-        int age = Integer.parseInt(jTextField2.getText());
-        String gender = String.valueOf(jComboBox2.getSelectedItem());
-        int id = Integer.parseInt(jTextField4.getText());
-        String department = jTextField5.getText() + "" + jTextField6.getText();
+            con = DB.getConnection();
+            System.out.println("con is done");
 
-        con = DB.getConnection();
-        System.out.println("con is done");
+            PreparedStatement pst;
 
-        PreparedStatement pst;
+            try {
+                String command = "insert into employee values (?,?,?,?,?,?)";
+                pst = con.prepareStatement(command);
+                pst.setInt(1, id);
+                pst.setString(2, name);
+                pst.setInt(3, age);
+                pst.setString(4, gender);
+                pst.setString(5, selectjob);
+                pst.setString(6, department);
 
-        try {
-            String command = "insert into employee values (?,?,?,?,?,?)";
-            pst = con.prepareStatement(command);
-            pst.setInt(1, id);
-            pst.setString(2, name);
-            pst.setInt(3, age);
-            pst.setString(4, gender);
-            pst.setString(5, selectjob);
-            pst.setString(6, department);
-            pst.executeUpdate();
+                int oi = pst.executeUpdate();
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-            System.out.println("Missing Input");
-        }
-        JOptionPane.showMessageDialog(null, " the employee has added");
+                if (oi == 1) {
+                    JOptionPane.showMessageDialog(null, "The employee " + id + " was added successfully ");
+                }
+
+            } catch (MySQLIntegrityConstraintViolationException ex) {
+                //handle ex
+                JOptionPane.showMessageDialog(null, "You cant enter this id record please enter another id ");
+            } catch (CommunicationsException e) {
+                JOptionPane.showMessageDialog(null, "There is a problem contacting the server");
+            } catch (SQLException sq) {
+                JOptionPane.showMessageDialog(null, sq.getMessage());
+            }
 
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -327,10 +346,6 @@ public class DNinput extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField4ActionPerformed
 
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField6ActionPerformed
-
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         new inputMenu().setVisible(true);
@@ -347,17 +362,6 @@ public class DNinput extends javax.swing.JFrame {
             jTextField2.setEditable(false);
         }
     }//GEN-LAST:event_jTextField2KeyPressed
-
-    private void jTextField6KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyPressed
-        // TODO add your handling code here:
-        char c = evt.getKeyChar();
-
-        if (Character.isDigit(c) || Character.isISOControl(c)) {
-            jTextField6.setEditable(true);
-        } else {
-            jTextField6.setEditable(false);
-        }
-    }//GEN-LAST:event_jTextField6KeyPressed
 
     private void jTextField4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyPressed
         // TODO add your handling code here:
@@ -435,6 +439,7 @@ public class DNinput extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -448,6 +453,5 @@ public class DNinput extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
     // End of variables declaration//GEN-END:variables
 }
