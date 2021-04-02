@@ -344,7 +344,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel13">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Number of Building"/>
+            <Property name="text" type="java.lang.String" value="Name of the Building"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextField9">

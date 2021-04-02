@@ -162,7 +162,7 @@ public class CapacityInput extends javax.swing.JFrame {
             }
         });
 
-        jLabel13.setText("Number of Building");
+        jLabel13.setText("Name of the Building");
 
         jTextField9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -379,9 +379,9 @@ public class CapacityInput extends javax.swing.JFrame {
 
             //building table
             String nameofbuilding = jTextField10.getText();
-            int numberofbeds = Integer.parseInt(jTextField8.getText());
-            int id = Integer.parseInt(jTextField9.getText());
-            int numberoficu = Integer.parseInt(jTextField11.getText());
+            int numberofbeds = Integer.parseInt(jTextField11.getText());
+            int id = Integer.parseInt(jTextField8.getText());
+            int numberoficu = Integer.parseInt(jTextField9.getText());
 
             con = DB.getConnection();
             System.out.println("con is done");
@@ -523,7 +523,7 @@ public class CapacityInput extends javax.swing.JFrame {
         // TODO add your handling code here:
         char c = evt.getKeyChar();
 
-        if (Character.isDigit(c) || Character.isISOControl(c)) {
+        if (Character.isLetter(c) || Character.isWhitespace(c) || Character.isISOControl(c)) {
             jTextField10.setEditable(true);
         } else {
             jTextField10.setEditable(false);
