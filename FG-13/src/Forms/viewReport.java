@@ -152,7 +152,7 @@ public class viewReport extends javax.swing.JFrame {
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
-         new DecisionSupport().setVisible(true);
+         new DecisionSupportScreen().setVisible(true);
                dispose();
     }//GEN-LAST:event_jButton9ActionPerformed
 
@@ -166,13 +166,13 @@ public class viewReport extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         
-                  new HRReport().setVisible(true);
+                  new HumanResources_Report().setVisible(true);
                dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        new DMMenu().setVisible(true);
+        new DecisionMaker_Menu().setVisible(true);
        dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -36,11 +36,11 @@ public class Login extends javax.swing.JFrame {
 
                 if (results.getString(1).equals(password)) {
                     if (results.getString(2).equals("expert")) {
-                        new ExMenu().setVisible(true);
+                        new Expert_Menu().setVisible(true);
                         return true;
 
                     } else if (results.getString(2).equals("dmaker")) {
-                        new DMMenu().setVisible(true);
+                        new DecisionMaker_Menu().setVisible(true);
                         return true;
                     } else if (results.getString(2).equals("admin")) {
                         new admin().setVisible(true);

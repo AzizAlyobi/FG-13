@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
  *
  * @author Shiro
  */
-public class DNinput extends javax.swing.JFrame {
+public class DoctorsAndNurses_management extends javax.swing.JFrame {
 
     Connection con = DB.getConnection();
 
@@ -44,7 +44,7 @@ public class DNinput extends javax.swing.JFrame {
         }
     }
 
-    public DNinput() {
+    public DoctorsAndNurses_management() {
         initComponents();
         setLocationRelativeTo(null);
         loadBuildingId();
@@ -348,7 +348,7 @@ public class DNinput extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        new inputMenu().setVisible(true);
+        new Management_Menu().setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -415,21 +415,27 @@ public class DNinput extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DNinput.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DoctorsAndNurses_management.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DNinput.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DoctorsAndNurses_management.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DNinput.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DoctorsAndNurses_management.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DNinput.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DoctorsAndNurses_management.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DNinput().setVisible(true);
+                new DoctorsAndNurses_management().setVisible(true);
             }
         });
     }
