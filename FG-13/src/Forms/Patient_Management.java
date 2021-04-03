@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
  *
  * @author Shiro
  */
-public class Patient_input extends javax.swing.JFrame {
+public class Patient_Management extends javax.swing.JFrame {
 
     static Connection con;
     static int doctorID;
@@ -46,7 +46,7 @@ public class Patient_input extends javax.swing.JFrame {
         }
     }
 
-    public Patient_input() {
+    public Patient_Management() {
         initComponents();
         setLocationRelativeTo(null);
         loadDoctorsId();
@@ -326,7 +326,7 @@ public class Patient_input extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        new inputMenu().setVisible(true);
+        new Management_Menu().setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -387,14 +387,16 @@ public class Patient_input extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Patient_input.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Patient_Management.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Patient_input.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Patient_Management.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Patient_input.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Patient_Management.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Patient_input.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Patient_Management.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -404,7 +406,7 @@ public class Patient_input extends javax.swing.JFrame {
 
                 con = DB.getConnection();
 
-                new Patient_input().setVisible(true);
+                new Patient_Management().setVisible(true);
             }
         });
     }
