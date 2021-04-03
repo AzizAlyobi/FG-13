@@ -6,8 +6,6 @@
 package Forms;
 
 import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,7 +24,6 @@ public class DecisionSupportScreen extends javax.swing.JFrame {
         int GownsN = 0;
         int GlovesN = 0;
         int FaceshieldN = 0;
-        int BedC = 0;
         int DoctorC = 0;
         int NurseC = 0;
         int MaskC = 0;
@@ -46,8 +43,6 @@ public class DecisionSupportScreen extends javax.swing.JFrame {
         try {
             String command = "select * from employee";
             pst = con.prepareStatement(command);
-            DoctorN = 0;
-            NurseN = 0;
             rs = pst.executeQuery();
             while (rs.next()) {
                 if (rs.getString(5).equalsIgnoreCase("doctor")) {
@@ -72,14 +67,14 @@ public class DecisionSupportScreen extends javax.swing.JFrame {
                 NumOfICU += rs.getInt(2);
             }
             rs = stmt.executeQuery("select DoctorC , NurseC , MaskC ,glovesC , faceshieldC , gownsC from Capacity");
-            rs.next();
-            DoctorC = rs.getInt(1);
-            NurseC = rs.getInt(2);
-            MaskC = rs.getInt(3);
-            glovesC = rs.getInt(4);
-            faceshieldC = rs.getInt(5);
-            gownsC = rs.getInt(6);
-
+            while (rs.next()) {
+                DoctorC += rs.getInt(1);
+                NurseC += rs.getInt(2);
+                MaskC += rs.getInt(3);
+                glovesC += rs.getInt(4);
+                faceshieldC += rs.getInt(5);
+                gownsC += rs.getInt(6);
+            }
             DoctorN = DoctorC - DoctorN;
             NurseN = NurseC - NurseN;
             MaskN = MaskC - MaskN;
@@ -95,7 +90,11 @@ public class DecisionSupportScreen extends javax.swing.JFrame {
             rs = stmt.executeQuery("select COUNT(*) from patient");
             rs.next();
             patient = rs.getInt(1);
-            if (patient > BedC) {
+            System.out.println(NumOfICU);
+            System.out.println(icuPatient);
+            System.out.println(NumOfBeds);
+            System.out.println(patient);
+            if (patient > NumOfBeds || icuPatient > NumOfICU) {
                 String yes = "Yes";
 
                 jTextField8.setText(yes);
